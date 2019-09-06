@@ -4,10 +4,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.assertj.core.util.Lists;
-
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author：Cheng.
