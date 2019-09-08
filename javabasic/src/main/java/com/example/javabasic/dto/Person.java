@@ -1,6 +1,5 @@
 package com.example.javabasic.dto;
 
-import com.example.javabasic.retention.TransformFiled;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -14,10 +13,10 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class Person {
 
-    @TransformFiled
+
     private String name;
 
-    @TransformFiled
+
     private int age;
 
     private Integer weight;
