@@ -1,4 +1,4 @@
-package com.example.javabasic.collectionutil;
+package com.example.javabasic.util.collectionutil;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;

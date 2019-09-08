@@ -1,4 +1,4 @@
-package com.example.javabasic.collectionutil;
+package com.example.javabasic.util.collectionutil;
 
 
 import com.alibaba.fastjson.JSON;

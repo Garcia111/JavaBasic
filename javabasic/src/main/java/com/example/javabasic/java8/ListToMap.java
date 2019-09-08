@@ -42,6 +42,17 @@ public class ListToMap {
         log.info(JSON.toJSON(appleMap).toString());
     }
 
+
+    @Test
+    public void listToMapGroup(){
+        log.info("=======list转Map分组=======");
+       Map<String,List<Apple>> appleGroupByColor = Optional.ofNullable(inventory)
+                .orElse(Collections.emptyList())
+                .stream().collect(Collectors.groupingBy(apple->apple.getColor()));
+
+        log.info(JSON.toJSON(appleGroupByColor).toString());
+    }
+
     @Test
     public void ListToMap2(){
         log.info("=====list转换为map，value为属性======");
