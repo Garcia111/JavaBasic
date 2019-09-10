@@ -4,14 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.example.javabasic.dto.Department;
 import com.example.javabasic.dto.Person;
 import com.example.javabasic.dto.PersonInfo;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.util.Assert;
 
 import java.beans.PropertyDescriptor;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author：Cheng.
@@ -40,6 +43,10 @@ public class BeanUtilsTest {
         System.out.println("使用BeanUtils:"+(tEnd2-tStart2));
         System.out.println(JSON.toJSON(p3));
 
+
+        testCglibBeanCopier(p1,p3);
+        System.out.println(JSON.toJSON(p3));
+
         //通过上例从p1复制到p3可以看到，使用BeanUtils会将p1中的null值也复制到p3中，如何防止这种情况发生呢？
         //需要提取p1中值为null的属性的名称，使用getNullPropertyNames方法可以获取一个对象中值为null的属性的名称集合
         PersonInfo p4 = new PersonInfo().setName("wangwu").setAge(18).setHeight(1.80).setWeight(100);
@@ -56,8 +63,27 @@ public class BeanUtilsTest {
                 .setChildDeps(Lists.newArrayList(childDep1,childDep2,childDep3));
         copyPropertiesIgnoreNullAndEmpty(parentDep,parentDep1);
         System.out.println(JSON.toJSON(parentDep1));
+
+
+
+//        testCglibBeanCopier(parentDep,parentDep1);
     }
 
+
+
+
+    public static void testCglibBeanCopier(Person origin, PersonInfo destination){
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        System.out.println();
+        System.out.println("================cglib BeanCopier执行" + 1 + "次================");
+
+        BeanCopier copier = BeanCopier.create(Person.class, PersonInfo.class, false);
+        copier.copy(origin, destination, null);
+
+        stopwatch.stop();
+
+        System.out.println("testCglibBeanCopier 耗时: " + stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    }
 
     public static String[] getNullPropertyNames (Object source) {
         final BeanWrapper src = new BeanWrapperImpl(source);
@@ -111,6 +137,9 @@ public class BeanUtilsTest {
 
 
     public static void copyPropertiesIgnoreNullAndEmpty(Object src, Object target){
+        Stopwatch stopwatch = Stopwatch.createStarted();
         BeanUtils.copyProperties(src, target, getNoValuePropertyNames(src));
+        stopwatch.stop();
+        System.out.println("BeanUtils.copyProperties 耗时: " + stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 }
