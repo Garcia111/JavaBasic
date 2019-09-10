@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2017 China Telecom System Integration Co., Ltd.
+  ~ All rights reserved.
+  -->
+
+<Configuration status="OFF">
+    <Properties>
+        <Property name="baseDir">logs</Property>
+        <Property name="logName">ssp_customer_center</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%clr{%d{HH:mm:ss.SSS} [%t] [%X{SeqID}] [%-6p] %c{1.}:%L - %m%n}"/>
+        </Console>
+        <RollingFile name="RollingFile" fileName="${baseDir}/${logName}.log"
+                     filePattern="${baseDir}/${logName}-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%d [%t] [%X{SeqID}] [%-6p] %c{1.}:%L - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <SizeBasedTriggeringPolicy size="300 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100">
+                <Delete basePath="${baseDir}" maxDepth="2">
+                    <IfFileName glob="*/${logName}-*.log.gz">
+                        <IfLastModified age="365d">
+                            <IfAny>
+                                <IfAccumulatedFileSize exceeds="100 GB"/>
+                                <IfAccumulatedFileCount exceeds="20"/>
+                            </IfAny>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="ctsi" level="TRACE"/>
+        <Logger name="cn.com.ctsi" level="TRACE"/>
+
+        <Logger name="com.amazonaws" level="WARN"/>
+
+        <Logger name="org.apache" level="WARN"/>
+
+        <Logger name="httpclient.wire" level="WARN"/>
+
+        <Logger name="org.springframework" level="WARN"/>
+        <Logger name="org.springframework.beans" level="WARN"/>
+        <Logger name="org.springframework.core" level="WARN"/>
+        <Logger name="org.springframework.data" level="WARN"/>
+        <Logger name="org.springframework.session" level="WARN"/>
+        <Logger name="org.springframework.web.socket.config" level="WARN"/>
+
+        <Logger name="org.springframework.boot" level="WARN"/>
+
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
