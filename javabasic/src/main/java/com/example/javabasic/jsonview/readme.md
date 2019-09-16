@@ -19,5 +19,10 @@
  eg：PersonInfo中包含User类，
  如果仍然想在返回中使用不同的视图，则需要继续在PersonInfo中User类的属性上添加@JsonView注解；
 4.在声明视图的类中如果有其他自定义的类作为属性，且该属性类没有声明相同的视图，则该属性类中的属性会被过滤掉。
-    eg:在PersonInfo类中有Student自定义类对象，PerosnInfo类中Student对象上加上了@JosnView注解，
-    但是Student类中的属性没有加该注解，测试结果返回为空。
+  eg:在PersonInfo类中有Student自定义类对象，PerosnInfo类中Student对象上加上了@JosnView注解，
+    但是Student类中的属性没有加该注解，测试结果返回为空；
+5.如果使用jpa搞数据库，并且出现了分页查询的业务请求，name可能就需要返回Page对象了，
+  此时@JosonView失效了，明明查到了但是数据返回为空；
+6.
+
+
