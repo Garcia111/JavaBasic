@@ -18,9 +18,7 @@ class Cookie{
 
 public class SweetShop {
 
-    //无论何时，只要你想在运行时使用类型信息，就必须首先获得恰当的Class对象的引用。
-    //使用Class.forName()适用于你没有该类的对象，而只是知道该类的完全限定名的情况；
-    //如果已经用来了一个类的实例对象，可以通过调用getClass()方法来获取Class引用。
+
     public static void main(String[] args){
         System.out.println("inside main");
         new Candy();
