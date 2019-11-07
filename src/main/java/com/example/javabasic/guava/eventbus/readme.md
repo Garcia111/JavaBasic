@@ -33,4 +33,25 @@ ConcurrentMap<Class<?>,CopyOnWriteArraySet<Subscriber>> ---------？？？？？
 
 
 3.MultiListener的使用：只需要在要订阅消息的方法上加上@Subscribe注解即可实现对多个消息的订阅;
-4.Event的继承(example3包)：如果Listener A监听Event A, 而Event A有一个子类Event B, 此时Listener A将同时接收Event A和B消息
+4.Event的继承(example3包)：如果Listener A监听Event A, 而Event A有一个子类Event B, 此时Listener A将同时接收Event A和B消息;
+5.异步消息总线，AsyncEventBus 的大部分使用方式和同步消息总线类型相同，唯一不同的是，需要对异步消息的线程池实现进行定义。
+   private final static AsyncEventBus timeAsyncEventBus = new AsynvEventBus(Executors.newCachedThreadPool());
+   在使用时需要根据自己的业务特点，选择相应的多线程缓存池配置。
+
+   为什么要在添加Subscribe注解的方法上面加上AllowConcurrentEvents，才能够达到真正的异步呢？
+    https://blog.csdn.net/koflance/article/details/55211990
+
+//todo 源码分析，现在仅仅是知道如何使用
+
+
+
+
+
+
+
+
+
+
+
+
+
