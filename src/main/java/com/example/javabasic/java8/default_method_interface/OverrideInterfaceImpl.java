@@ -4,7 +4,7 @@ package com.example.javabasic.java8.default_method_interface;
  * @author：Cheng.
  * @date：Created in 17:32 2019/11/7
  */
-public class OverrideInterface implements InterfaceWithDefaultMethod {
+public class OverrideInterfaceImpl implements InterfaceWithDefaultMethod {
 
     /**
      * 接口的实现类中可以覆盖接口中的默认方法
