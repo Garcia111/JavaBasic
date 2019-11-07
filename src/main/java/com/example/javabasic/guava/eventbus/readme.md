@@ -42,6 +42,7 @@ ConcurrentMap<Class<?>,CopyOnWriteArraySet<Subscriber>> ---------？？？？？
     https://blog.csdn.net/koflance/article/details/55211990
 
 //todo 源码分析，现在仅仅是知道如何使用
+https://cloud.tencent.com/developer/article/1413461
 
 
 
