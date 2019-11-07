@@ -1,4 +1,4 @@
-package com.example.javabasic.designpattern.ObserverPattern;
+package com.example.javabasic.designpattern.ObserverPattern.selfobserverpattern;
 
 /**
  * @author：Cheng.

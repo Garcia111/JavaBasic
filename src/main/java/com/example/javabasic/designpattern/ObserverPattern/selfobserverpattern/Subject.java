@@ -1,4 +1,4 @@
-package com.example.javabasic.designpattern.ObserverPattern;
+package com.example.javabasic.designpattern.ObserverPattern.selfobserverpattern;
 
 /**
  * 主题：观察者模式中一的一方

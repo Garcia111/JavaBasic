@@ -1,6 +1,4 @@
-package com.example.javabasic.designpattern.ObserverPattern;
-
-import com.sun.deploy.net.proxy.WIExplorerAutoProxyHandler;
+package com.example.javabasic.designpattern.ObserverPattern.selfobserverpattern;
 
 /**
  * @author：Cheng.

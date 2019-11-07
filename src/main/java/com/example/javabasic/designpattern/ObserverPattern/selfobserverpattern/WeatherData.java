@@ -1,4 +1,4 @@
-package com.example.javabasic.designpattern.ObserverPattern;
+package com.example.javabasic.designpattern.ObserverPattern.selfobserverpattern;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
