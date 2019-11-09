@@ -74,6 +74,50 @@ Java8新特性：
     3.引用某个类型的任意对象的实力方法：ContainingType::methodName
     4.引用构造方法: ClassName::new    
   
+6.Stream
+
+    Java8中添加的Stream API，将真正的函数式变成风格引入到Java中。流可以是无限的，有状态的，可以是顺序的，也可以是并行的
+    在使用流的时候，你首先需要从一些来源中获取一个流，执行一个或者多个中间操作，然后执行一个最终操作。
+    中间操作包括：filter map  flatmap peel  distinct  sorted  limit 和substream
+    中止操作包括: forEach  toArray  reduce  collect  min  max  count  anyMatch  allMatch
+    noneMatch  findFirst  findAny
+
+    https://blog.csdn.net/icarusliu/article/details/79495534
+    Java8中的函数式接口：
+        1.Consumer:
+            Consumer的意思就是消费，即针对某个东西我们来使用它，因此它包含有一个有输入而无输出的accept接口方法
+            接口默认方法：andThen----用来指定执行完当前consumer对象的accept方法后，接下来执行哪一个consumer对象的accept方法；
+
+        2.Function 函数式编程接口：
+            函数经常是有输入输出的，因此它含有一个apply方法，包含一个输入输出
+
+    1.一些重要方法说明：
+    http://blog.csdn.net/icarusliu/article/details/79495534
+    stream: 返回数据流，集合作为其源
+    parallelStream: 返回并行数据流， 集合作为其源
+    filter: 方法用于过滤出满足条件的元素
+    map: 方法用于映射每个元素对应的结果
+    forEach: 方法遍历该流中的每个元素
+    limit: 方法用于减少流的大小
+    sorted: 方法用来对流中的元素进行排序
+    anyMatch: 是否存在任意一个元素满足条件（返回布尔值）
+    allMatch: 是否所有元素都满足条件（返回布尔值）
+    noneMatch: 是否所有元素都不满足条件（返回布尔值）
+    collect: 方法是终端操作，这是通常出现在管道传输操作结束标记流的结束
+
+    BiFunction
+    是一个函数式接口，包含的函数式方法定义如下
+
+
+
+
+
+
+
+
+
+
+
 
 
 

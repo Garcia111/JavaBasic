@@ -1,5 +1,7 @@
 package com.example.javabasic.java8.method_reference;
 
+import org.junit.Test;
+
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Comparator;
