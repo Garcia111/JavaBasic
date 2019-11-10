@@ -26,6 +26,7 @@ public class GenericClassReferences {
         //为了在使用泛化的Class引用时放松限制，使用通配符？,表示任何事物。
         Class<?> generalClass = int.class;
         generalClass = double.class;
+        generalClass = Double.class;
 
         //为了创建一个Class引用，它被限定为某种类型，或者该类型的任何子类型，
         // 你需要将通配符与extends关键字相结合，创建一个范围

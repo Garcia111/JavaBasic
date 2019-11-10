@@ -117,11 +117,11 @@ Stream与Iterator的区别
     Stream的数据源可以有无限多个。
     
    
-ParallelStream
+7.ParallelStream
     
     parallelStream提供了流的并行处理，它是Stream的另一个重要特性，其底层使用Fork/join框架实现.
     
-并行流的陷阱：
+    并行流的陷阱：
     1.线程安全
         由于并行流使用多线程，所以应该考虑线程安全问题：资源竞争、死锁、事务、可见性。
     2.线程消费
@@ -130,10 +130,11 @@ ParallelStream
 
 
 
+8.Base64
+    在Java8中，Base64编码已经成为Java类库的标准。
 
 
-
-
+9. Java8中，HashMap内部实现又引入了红黑树（数组+链表+红黑树），使得HashMap的总体性能相较于Java7 有了比较明显的提升？？
 
 
 
