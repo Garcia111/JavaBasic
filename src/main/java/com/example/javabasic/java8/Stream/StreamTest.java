@@ -66,11 +66,7 @@ public class StreamTest {
     }
 
 
-    public void reduce(List<String> list){
-        //规约？？
-        Optional<String> reduced = list.stream().sorted().reduce((s1,s2)->s1+"#"+s2);
-        reduced.ifPresent(System.out::println);
-    }
+
 
 
     /**
