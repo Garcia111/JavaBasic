@@ -1,0 +1,14 @@
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: root
+    password: root
+
+
+custom:
+  amqp:
+    maxPoolSize: 100
+    corePoolSize: 10
+    keepAliveSeconds: 30000
+    queueCapacity: 5
