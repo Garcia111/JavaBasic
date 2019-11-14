@@ -1,9 +1,6 @@
 package com.example.javabasic.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -12,9 +9,9 @@ import java.util.Objects;
  * @author：Cheng.
  * @date：Created in 18:37 2019/9/4
  */
+@Data
 @Getter
 @Setter
-@AllArgsConstructor
 @ToString
 public class Student {
     private Long id;
@@ -36,5 +33,15 @@ public class Student {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, score);
+    }
+
+    public Student(Long id, String name, Integer score) {
+        this.id = id;
+        this.name = name;
+        this.score = score;
+    }
+
+    public Integer getScore() {
+        return score;
     }
 }

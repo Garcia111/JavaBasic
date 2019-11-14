@@ -47,9 +47,9 @@ public class StreamTest {
         eggs.add(new String[]{"鸡蛋_2", "鸡蛋_2", "鸡蛋_2", "鸡蛋_2", "鸡蛋_2"});
 
 
-        studentList = Lists.list(new Student((long) 1, "zhangsan", 100),
-                new Student((long) 2, "zhangsan2", 99),
-                new Student((long) 3, "zhangsan3", 300));
+        studentList = Lists.list(new Student( 1L, "zhangsan", 100),
+                new Student(2L, "zhangsan2", 99),
+                new Student(3L, "zhangsan3", 300));
     }
 
     //Map与flatMap的区别

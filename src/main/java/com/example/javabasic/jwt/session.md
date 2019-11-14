@@ -43,3 +43,7 @@
         }ELSE IF（请求中没有会话ID cookie 或者 没有与此会话ID匹配的当前会话）{
             创建一个新的会话；
         }
+        
+        
+Cookie与Session
+    
