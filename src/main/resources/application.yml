@@ -12,3 +12,10 @@ custom:
     corePoolSize: 10
     keepAliveSeconds: 30000
     queueCapacity: 5
+
+
+jwt:
+#  jwt的秘钥
+  secret: JO6HN3NGIU25G2FIG8V7VD6CK9B6T2Z5
+#  jwt的过期时间
+  expire: 60000

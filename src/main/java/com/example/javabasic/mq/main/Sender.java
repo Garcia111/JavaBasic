@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -44,5 +45,15 @@ public class Sender implements InitializingBean {
         } catch (UnknownHostException e) {
             host = "unknow:createTable:";
         }
+    }
+
+
+    @Test
+    public void getHost() throws UnknownHostException {
+        InetAddress a = InetAddress.getLocalHost();
+        String host = a.getHostName();
+
+        System.out.println("HostName:"+host);
+        System.out.println("HostAdrress:"+a.getHostAddress());
     }
 }
