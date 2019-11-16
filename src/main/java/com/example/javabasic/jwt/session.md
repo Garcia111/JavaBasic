@@ -68,7 +68,98 @@
          3.客户到来，开始一个会话，然后完成了一个购买结账来结束会话
          
          容器是如何知道客户什么时候走的呢？容器又如何知道什么时候能够安全地撤销一个会话？   
-         HttpSession接口     
+         HttpSession接口
+         
+         1.getCreationTime():返回第一次创建会话的时间；-----可以用来为某些会话的寿命限制为一个固定的时间；
+         2.getLastAccessedTime():返回容器最后一次得到包含这个会话ID的请求后过去了多长时间（毫秒数）
+            得出客户最后一次访问这个会话是什么时候，可以用来确定客户已经离开了多长时间
+         3.setMaxInactiveInternal():指定对于这个会话客户请求的最大间隔时间。
+            如果已经过去了指定的时间，客户未对这个会话做任何请求，就会导致会话被撤销。可以使用这个方法减少服务器中无用的会话。
+         4.getMaxInactiveInternal()
+         5.invalidate():结束会话，当前存储在这个会话中的所有会话属性也会解除绑定。          
         
 Cookie与Session
+    
+   Cookie可以用于其他用处吗？Cookie是不是只能用于会话？
+    
+    Cookie实际上就是在客户和服务器之间交换的一小段数据，可以使用cookie在服务器和客户之间交换名/值 String对。
+    服务器将cookie发送给客户，客户再在以后的每个请求中发回这个cookie。
+    客户的浏览器退出时，会话cookie就会消失，但是你可以告诉cookie在客户端上待得更久一些，甚至在浏览器关闭之后还持久保存。
+    
+    
+  与Cookie相关的三个类：HttpServletRequest  HttpServletResponse   Cookie
+  
+    1.HttpServeletRequest------getCookies()
+    2.HttpServeletResponse------addCookie()
+    3.javax.servelet.http.Cookie
+        Cookie(String,String)
+        String getDomain()
+        int getMaxAge()
+        String getName()
+        String getPath()
+        boolean getSecure()
+        String getValue()
+        void setDomain(String)
+        void setMaxAge(int)
+        void setPath(String)
+        void setValue(String)
+        
+        1.创建一个新的Cookie:Cookie cookie = new Cookie("username",name);
+        2.设置cookie在客户端上存活多久  cookie.setMaxAge(30*60);
+        3.将cookie发送到客户 response.addCookie(cookie);
+        4.从客户请求得到cookie,或者多个cookie
+        Cookie[] cookies = request.getCookies();
+        for(int i=0;i<cookies.length;i++){
+            Cookie cookie = cookies[i];
+            if(cookie.getName().equals("username")){
+                String userName = cookie.getValue();
+                System.out.println("Hello "+userName);
+                break;
+            }
+        }
+        
+  会话的生命周期事件
+    1.创建会话
+        容器第一次创建一个会话
+    2.撤销会话
+        容器设置一个会话无效，或者因为这个会话超时，或者因为应用的某个部分调用了会话的invalidate()
+    3.属性相关
+        增加一个属性：setAttribute()
+        删除一个属性：removeAttribute()
+    4.迁移
+        容器打算将会话迁移到另外一个JVM中，要在会话移动之前调用，这样就能让属性有机会做好迁移的准备
+        
+Session迁移
+    应用的各个部分可以复制在网络中的多个节点上，容器可能会完成负载均衡，取得客户的请求，将请求发送到多个JVM上。
+    这说明，每次客户请求时，最后有可能会到达同一个servlet的不同实例。
+    那么在分布式环境中 ServletContext ServletConfig和HttpSession对象会有什么变化?
+    
+    只有HttpSession对象及其属性会从一个JVM迁移到另外一个JVM，每个JVM中都会有一个ServletContext；
+    每个JVM上的每个Servlet都会有一个ServletConfig;
+    对于每个Web应用的一个给定的会话ID,只有一个HttpSession对象，不论应用分布在多少个JVM上。
+    
+  会话的迁移意味着，会话在一个JVM1上钝化，并在另一个JVM2上激活，JVM2会建立一个新线程，将新请求与刚前来的会话相关联。
+    
+    会话中属性的迁移：
+    会话迁移与串行化过程中，容器需要迁移Serializable属性，确保你的SessionAttribute对象类型都是Serializable，
+    但是如果属性类型不是Serializable，可以让属性对象类实现HttpSessionActivationListener。
+        
+        
+    区分：
+    HttpSessionListener
+    HttpSessionAttributeListener
+    HttpSessionBindingListener
+    HttpSessionActiveListener
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+        
+    
     
