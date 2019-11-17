@@ -1,9 +1,8 @@
-package com.example.javabasic.jwt.session;
+package com.example.javabasic.jwt_session_cookie.session;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
-import javax.websocket.Session;
 
 /**
  * @author：Cheng.

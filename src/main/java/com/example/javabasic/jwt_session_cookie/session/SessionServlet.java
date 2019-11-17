@@ -1,4 +1,4 @@
-package com.example.javabasic.jwt.session;
+package com.example.javabasic.jwt_session_cookie.session;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

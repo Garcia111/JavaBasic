@@ -1,4 +1,4 @@
-package com.example.javabasic.jwt;
+package com.example.javabasic.jwt_session_cookie;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -18,10 +18,10 @@ import java.util.Date;
 @Configuration
 public class JwtToken {
 
-    @Value("${jwt.secret}")
+    @Value("${jwt_session_cookie.secret}")
     private String secret;
 
-    @Value("${jwt.expire}")
+    @Value("${jwt_session_cookie.expire}")
     private long expire;
 
     /**

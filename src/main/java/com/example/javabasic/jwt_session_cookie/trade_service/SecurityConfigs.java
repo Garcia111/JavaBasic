@@ -1,4 +1,4 @@
-package com.example.javabasic.jwt.trade_service;
+package com.example.javabasic.jwt_session_cookie.trade_service;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

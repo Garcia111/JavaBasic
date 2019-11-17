@@ -1,4 +1,4 @@
-package com.example.javabasic.jwt;
+package com.example.javabasic.jwt_session_cookie;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;

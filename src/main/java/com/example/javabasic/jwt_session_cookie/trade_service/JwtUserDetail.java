@@ -1,4 +1,4 @@
-package com.example.javabasic.jwt.trade_service;
+package com.example.javabasic.jwt_session_cookie.trade_service;
 
 import java.io.Serializable;
 import java.util.List;

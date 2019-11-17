@@ -1,4 +1,4 @@
-package com.example.javabasic.jwt.cookie;
+package com.example.javabasic.jwt_session_cookie.cookie;
 
 
 import javax.servlet.http.Cookie;

@@ -1,4 +1,4 @@
-package com.example.javabasic.jwt.trade_service;
+package com.example.javabasic.jwt_session_cookie.trade_service;
 
 /**
  * @author：Cheng.
@@ -54,11 +54,11 @@ public class JwtUtils {
     }
 
     /**
-     * Check jwt token jwt claims set.
+     * Check jwt_session_cookie token jwt_session_cookie claims set.
      *
      * @param publicKey the public key
      * @param token the token
-     * @return the jwt claims set
+     * @return the jwt_session_cookie claims set
      */
     public static JWTClaimsSet checkJwtToken(ECPublicKey publicKey, String token) {
         SignedJWT jwsObject;

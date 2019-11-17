@@ -1,7 +1,7 @@
-package com.example.javabasic.jwt.trade_service;
+package com.example.javabasic.jwt_session_cookie.trade_service;
 
 
-import static com.example.javabasic.jwt.trade_service.ConfigKey.*;
+import static com.example.javabasic.jwt_session_cookie.trade_service.ConfigKey.*;
 import com.nimbusds.jwt.JWTClaimsSet;
 import java.io.IOException;
 import java.security.KeyPair;
@@ -74,7 +74,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Get Bear jwt from request header Authorization.
+     * Get Bear jwt_session_cookie from request header Authorization.
      *
      * @param request servlet request.
      * @return token or null.
