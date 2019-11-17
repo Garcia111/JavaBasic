@@ -18,10 +18,10 @@ import java.util.Date;
 @Configuration
 public class JwtToken {
 
-    @Value("${jwt_session_cookie.secret}")
+    @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt_session_cookie.expire}")
+    @Value("${jwt.expire}")
     private long expire;
 
     /**
