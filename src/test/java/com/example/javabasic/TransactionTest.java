@@ -1,6 +1,6 @@
 package com.example.javabasic;
 
-import com.example.javabasic.interview.interview_20191117.TransactionAopServiceImpl;
+import com.example.javabasic.interview.interview20191117.TransactionAopService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TransactionTest {
 
     @Autowired
-    TransactionAopServiceImpl transactionAopService;
+    TransactionAopService transactionAopService;
 
     @Test
     public void test(){

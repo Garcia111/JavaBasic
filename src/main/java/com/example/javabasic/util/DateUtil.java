@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-/** Created with IntelliJ IDEA. User: fangzh Date: 2019/9/16 16:37 Desp: 时间相关工具类 */
+/** Created with IntelliJ IDEA. UserEntity: fangzh Date: 2019/9/16 16:37 Desp: 时间相关工具类 */
 @UtilityClass
 public class DateUtil {
 
