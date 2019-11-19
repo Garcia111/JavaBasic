@@ -18,6 +18,7 @@ import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.DefaultJpaDialect;
+import org.springframework.orm.jpa.JpaDialect;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
@@ -40,15 +41,13 @@ import javax.sql.DataSource;
 @EnableJpaRepositories
 @EnableTransactionManagement
 @EnableJpaAuditing(dateTimeProviderRef = "dateTimeProvider")
-@ConfigurationProperties(prefix = "spring.datasource")
 @PropertySource("classpath:application.yml")
 public class PersistenceConfiguration {
 
-    private static final String PROPERTY_NAME_DATABASE_DRIVER = "driver-class-name";
-    private static final String PROPERTY_NAME_DATABASE_URL = "url";
-    private static final String PROPERTY_NAME_DATABASE_USERNAME = "username";
-    private static final String PROPERTY_NAME_DATABASE_PASSWORD = "password";
-
+    private static final String PROPERTY_NAME_DATABASE_DRIVER = "spring.datasource.driver-class-name";
+    private static final String PROPERTY_NAME_DATABASE_URL = "spring.datasource.url";
+    private static final String PROPERTY_NAME_DATABASE_USERNAME = "spring.datasource.username";
+    private static final String PROPERTY_NAME_DATABASE_PASSWORD = "spring.datasource.password";
 
     @Resource
     private Environment environment;
@@ -84,8 +83,6 @@ public class PersistenceConfiguration {
     public PlatformTransactionManager transactionManager() {
         EntityManagerFactory factory = entityManagerFactory();
         JpaTransactionManager manager = new JpaTransactionManager(factory);
-        manager.setJpaDialect(new HibernateJpaDialect());
-
         return manager;
     }
 
@@ -98,8 +95,8 @@ public class PersistenceConfiguration {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("com.example.javabasic.interview.interview20191117");
+        factory.setJpaDialect(new DefaultJpaDialect());
         factory.setDataSource(dataSource());
-        factory.setJpaDialect(new HibernateJpaDialect());
         factory.afterPropertiesSet();
         factory.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
         return factory.getObject();

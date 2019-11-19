@@ -17,7 +17,6 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @Table(name = "user")
 @Entity
-@MappedSuperclass
 @Accessors(chain = true)
 @EntityListeners({AuditingEntityListener.class})
 public class UserEntity {

@@ -1,4 +1,30 @@
+# SPRING PROFILES
 spring:
+  ## DB
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=GBK&serverTimezone=UTC&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+  ## SPRING DATA JPA
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    properties:
+      jadira.usertype.autoRegisterUserTypes: true
+      hibernate.enable_lazy_load_no_trans: true
+    hibernate:
+      ddl-auto: validate
+    generate-ddl: true
+
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  main:
+    allow-bean-definition-overriding: true
+
   rabbitmq:
     host: 127.0.0.1
     port: 5672
@@ -19,3 +45,6 @@ jwt:
   secret: JO6HN3NGIU25G2FIG8V7VD6CK9B6T2Z5
 #  jwt的过期时间
   expire: 60000
+
+
+

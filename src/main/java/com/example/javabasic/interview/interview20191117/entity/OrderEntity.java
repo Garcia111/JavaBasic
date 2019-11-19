@@ -17,7 +17,6 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @Table(name = "order_info")
 @Entity
-@MappedSuperclass
 @Accessors(chain = true)
 @EntityListeners({AuditingEntityListener.class})
 public class OrderEntity {
