@@ -1,6 +1,4 @@
-package com.example.javabasic.threadpool.thread_priority;
-
-import com.example.javabasic.threadpool.LiftOff;
+package com.example.javabasic.thread.thread_priority;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

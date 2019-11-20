@@ -1,4 +1,4 @@
-package com.example.javabasic.threadpool;
+package com.example.javabasic.thread;
 
 public class MoreBasicThreads {
 

@@ -60,7 +60,7 @@ public class JwtUtils {
      * @param token the token
      * @return the jwt_session_cookie claims set
      */
-    public static JWTClaimsSet checkJwtToken(ECPublicKey publicKey, String token) {
+    public static JWTClaimsSet checkJwtToken(ECPublicKey publicKey, String token) throws JwtTokenInvalidException, JwtTokenExpiredException {
         SignedJWT jwsObject;
         try {
             jwsObject = SignedJWT.parse(token);
