@@ -1,4 +1,4 @@
-package com.example.javabasic.threadpool.callable;
+package com.example.javabasic.thread.callable;
 
 import java.util.ArrayList;
 import java.util.concurrent.*;

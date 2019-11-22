@@ -1,6 +1,6 @@
-package com.example.javabasic.threadpool.executor;
+package com.example.javabasic.thread.executor;
 
-import com.example.javabasic.threadpool.LiftOff;
+import com.example.javabasic.thread.LiftOff;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

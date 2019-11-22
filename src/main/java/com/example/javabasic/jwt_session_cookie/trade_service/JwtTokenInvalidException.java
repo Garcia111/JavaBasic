@@ -1,6 +1,6 @@
 package com.example.javabasic.jwt_session_cookie.trade_service;
 
-import cn.com.ctsi.commons.exception.BaseRuntimeException;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

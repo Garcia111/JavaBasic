@@ -1,4 +1,4 @@
-package com.example.javabasic.threadpool.sleep;
+package com.example.javabasic.thread.sleep;
 
 import java.util.Random;
 import java.util.concurrent.*;
