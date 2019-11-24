@@ -5,8 +5,6 @@
 package com.example.javabasic.interview.interview20191117;
 
 
-import org.hibernate.dialect.MySQL5InnoDBDialect;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -18,10 +16,8 @@ import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.DefaultJpaDialect;
-import org.springframework.orm.jpa.JpaDialect;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -40,70 +36,71 @@ import javax.sql.DataSource;
 @Configuration
 @EnableJpaRepositories
 @EnableTransactionManagement
-@EnableJpaAuditing(dateTimeProviderRef = "dateTimeProvider")
+//@EnableJpaAuditing(dateTimeProviderRef = "dateTimeProvider")
+@EnableJpaAuditing()
 @PropertySource("classpath:application.yml")
 public class PersistenceConfiguration {
 
-    private static final String PROPERTY_NAME_DATABASE_DRIVER = "spring.datasource.driver-class-name";
-    private static final String PROPERTY_NAME_DATABASE_URL = "spring.datasource.url";
-    private static final String PROPERTY_NAME_DATABASE_USERNAME = "spring.datasource.username";
-    private static final String PROPERTY_NAME_DATABASE_PASSWORD = "spring.datasource.password";
+//    private static final String PROPERTY_NAME_DATABASE_DRIVER = "spring.datasource.driver-class-name";
+//    private static final String PROPERTY_NAME_DATABASE_URL = "spring.datasource.url";
+//    private static final String PROPERTY_NAME_DATABASE_USERNAME = "spring.datasource.username";
+//    private static final String PROPERTY_NAME_DATABASE_PASSWORD = "spring.datasource.password";
 
-    @Resource
-    private Environment environment;
-
-
-    /**
-     * Date time provider date time provider.
-     *
-     * @return the date time provider
-     */
-    @Bean
-    public DateTimeProvider dateTimeProvider(DateTimeService dateTimeService) {
-        return dateTimeService::getNow;
-    }
-
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName(environment
-                .getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
-        dataSource.setUrl(environment
-                .getRequiredProperty(PROPERTY_NAME_DATABASE_URL));
-        dataSource.setUsername(environment
-                .getRequiredProperty(PROPERTY_NAME_DATABASE_USERNAME));
-        dataSource.setPassword(environment
-                .getRequiredProperty(PROPERTY_NAME_DATABASE_PASSWORD));
-
-        return dataSource;
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        EntityManagerFactory factory = entityManagerFactory();
-        JpaTransactionManager manager = new JpaTransactionManager(factory);
-        return manager;
-    }
-
-
-    @Bean
-    public EntityManagerFactory entityManagerFactory() {
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(Boolean.TRUE);
-        vendorAdapter.setShowSql(Boolean.TRUE);
-        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.example.javabasic.interview.interview20191117");
-        factory.setJpaDialect(new DefaultJpaDialect());
-        factory.setDataSource(dataSource());
-        factory.afterPropertiesSet();
-        factory.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
-        return factory.getObject();
-    }
-
-    @Bean
-    public HibernateExceptionTranslator hibernateExceptionTranslator() {
-        return new HibernateExceptionTranslator();
-    }
+//    @Resource
+//    private Environment environment;
+//
+//
+//    /**
+//     * Date time provider date time provider.
+//     *
+//     * @return the date time provider
+//     */
+//    @Bean
+//    public DateTimeProvider dateTimeProvider(DateTimeService dateTimeService) {
+//        return dateTimeService::getNow;
+//    }
+//
+//    @Bean
+//    public DataSource dataSource() {
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//
+//        dataSource.setDriverClassName(environment
+//                .getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
+//        dataSource.setUrl(environment
+//                .getRequiredProperty(PROPERTY_NAME_DATABASE_URL));
+//        dataSource.setUsername(environment
+//                .getRequiredProperty(PROPERTY_NAME_DATABASE_USERNAME));
+//        dataSource.setPassword(environment
+//                .getRequiredProperty(PROPERTY_NAME_DATABASE_PASSWORD));
+//
+//        return dataSource;
+//    }
+//
+//    @Bean
+//    public PlatformTransactionManager transactionManager() {
+//        EntityManagerFactory factory = entityManagerFactory();
+//        JpaTransactionManager manager = new JpaTransactionManager(factory);
+//        return manager;
+//    }
+//
+//
+//    @Bean
+//    public EntityManagerFactory entityManagerFactory() {
+//        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+//        vendorAdapter.setGenerateDdl(Boolean.TRUE);
+//        vendorAdapter.setShowSql(Boolean.TRUE);
+//        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+//        factory.setJpaVendorAdapter(vendorAdapter);
+//        factory.setPackagesToScan("com.example.javabasic.interview.interview20191117");
+//        factory.setJpaDialect(new DefaultJpaDialect());
+//        factory.setDataSource(dataSource());
+//        factory.afterPropertiesSet();
+//        factory.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
+//        return factory.getObject();
+//    }
+//
+//    @Bean
+//    public HibernateExceptionTranslator hibernateExceptionTranslator() {
+//        return new HibernateExceptionTranslator();
+//    }
 }

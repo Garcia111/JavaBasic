@@ -1,6 +1,6 @@
 package com.example.javabasic.interview.interview20191117.repository;
 
-import com.example.javabasic.interview.interview20191117.entity.OrderEntity;
+import com.example.javabasic.entity.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

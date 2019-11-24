@@ -34,7 +34,7 @@ public class StreamTest {
 
 
     public void filter(List<String> list){
-        list.stream().filter(s->s.startsWith("R")).forEach(System.out::println);
+        list.stream().filter(s->s.startsWith("Response")).forEach(System.out::println);
     }
 
     public void sort(List<String> list){
@@ -48,20 +48,20 @@ public class StreamTest {
     }
 
     public void match(List<String> list){
-        boolean anyStartsWithR = list.stream().anyMatch((s)->s.startsWith("R"));
+        boolean anyStartsWithR = list.stream().anyMatch((s)->s.startsWith("Response"));
         System.out.println("anyMatch: "+anyStartsWithR);
 
-        boolean allStartWithR = list.stream().allMatch((s)->s.startsWith("R"));
+        boolean allStartWithR = list.stream().allMatch((s)->s.startsWith("Response"));
         System.out.println("allMatch: "+allStartWithR);
 
 
-        boolean noneStartWithR = list.stream().noneMatch((s)->s.startsWith("R"));
+        boolean noneStartWithR = list.stream().noneMatch((s)->s.startsWith("Response"));
         System.out.println("noneMatch: "+noneStartWithR);
     }
 
 
     public void count(List<String> list){
-        Long count = list.stream().filter(s->s.startsWith("R")).count();
+        Long count = list.stream().filter(s->s.startsWith("Response")).count();
         System.out.println("count: "+count);
     }
 

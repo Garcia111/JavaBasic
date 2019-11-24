@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
 @EnableConfigurationProperties
-@EnableJpaRepositories(value = {"com.example.javabasic.interview.interview20191117.repository"})
+@EnableJpaRepositories(value = {"com.example.javabasic.interview.interview20191117.repository",
+        "com.example.javabasic.redis_action.redis_practive_2.dao"})
 @SpringBootApplication
 public class JavabasicApplication {
 

@@ -1,7 +1,7 @@
 package com.example.javabasic.interview.interview20191117.service;
 
-import com.example.javabasic.interview.interview20191117.entity.OrderEntity;
-import com.example.javabasic.interview.interview20191117.entity.UserEntity;
+import com.example.javabasic.entity.OrderEntity;
+import com.example.javabasic.entity.UserEntity;
 import com.example.javabasic.interview.interview20191117.exception.OrderInfoException;
 import com.example.javabasic.interview.interview20191117.exception.UserInfoException;
 import com.example.javabasic.interview.interview20191117.repository.OrderInfoRepository;

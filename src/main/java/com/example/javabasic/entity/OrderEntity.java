@@ -1,4 +1,4 @@
-package com.example.javabasic.interview.interview20191117.entity;
+package com.example.javabasic.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,30 +10,30 @@ import javax.persistence.*;
 
 /**
  * @author：Cheng.
- * @date：Created in 9:28 2019/11/18
+ * @date：Created in 9:32 2019/11/18
  */
 @Data
 @ToString
 @EqualsAndHashCode
-@Table(name = "user")
+@Table(name = "order_info")
 @Entity
 @Accessors(chain = true)
 @EntityListeners({AuditingEntityListener.class})
-public class UserEntity {
+public class OrderEntity {
+
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_info_seq")
     @SequenceGenerator(
-            name = "user_seq",
-            sequenceName = "user_id_seq",
+            name = "order_info_seq",
+            sequenceName = "order_info_id_seq",
             allocationSize = 1)
     private Long id;
 
+    @Column(name = "user_id",nullable = false)
+    private Long userId;
 
-    @Column(name = "name",nullable = false)
-    private String name;
+    @Column(name = "amount",nullable = false)
+    private Long amount;
 
-
-    @Column(name = "phone",nullable = false)
-    private String phone;
 }

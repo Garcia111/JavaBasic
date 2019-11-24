@@ -1,6 +1,6 @@
 package com.example.javabasic.interview.interview20191117.repository;
 
-import com.example.javabasic.interview.interview20191117.entity.UserEntity;
+import com.example.javabasic.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
