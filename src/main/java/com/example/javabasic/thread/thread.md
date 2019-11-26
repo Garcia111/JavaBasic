@@ -99,9 +99,41 @@
     对join()方法的调用可以被中断，做法是在调用线程上调用interrupt()方法，这时需要用到try-catch子句。
    
   
+   10.捕获异常
+   
+       线程中的异常会逃出异常，使用普通的try catch方式无法捕获异常。
+       Thread.UncaughtExceptionHandler是Java SE5中的接口，它允许你在每一个Thread对象上
+       都附着上一个异常处理器。Thread.UncaughtExceptionHandler.uncaughtException()会在线程
+       因未捕获的异常而临近死亡的时候被调用。
+       
+       实例：CaptureUncaughtException.java
     
-    
-    
+       如果线程中抛出的异常，使用的相同的异常处理器，可以在Thread类中设置一个静态域，并将这个处理器设置为
+       默认的未捕获异常处理器。
+       
+       public class SettingDefaultHandler {
+       
+           public static void main(String[] args){
+               Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
+               ExecutorService exec = Executors.newCachedThreadPool();
+               exec.execute(new ExceptionThread());
+               //设置ExceptionThread类的默认异常处理器为MyUncaughtExceptionHandler
+           }
+       }
+       
+       
+       这个处理器只有在不存在线程专有的未捕获异常处理器的情况下才会被调用。
+       系统会检查线程专有版本，如果没有发现，则检查线程组是否有其专有的uncaughtException()方法，
+       如果也没有，再调用defaultUncaughtExceptionHandler。
+       
+       
+   11.共享资源
+        
+        通过将线程要执行的任务与线程需要访问的共享资源进行分离，这可以消除所谓竞争条件，即两个或者更多的任务
+        竞争响应某个条件，因此产生冲突或者不一致结果的情况。
+        需要仔细考虑并防范并发系统失败的所有可能途径，例如：
+        一个任务不能依赖于另一个任务，因为任务关闭的顺序无法得到保证。这里，通过使用任务以来与非任务对象，
+        我们可以消除潜在的竞争条件。    
     
     
     
