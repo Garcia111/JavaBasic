@@ -194,6 +194,10 @@
                     <artifactId>commons-collections4</artifactId>
                     <groupId>org.apache.commons</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>commons-lang3</artifactId>
+                    <groupId>org.apache.commons</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -323,6 +327,18 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.xuanner</groupId>
+            <artifactId>xsequence-core</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
         </dependency>
 
     </dependencies>
