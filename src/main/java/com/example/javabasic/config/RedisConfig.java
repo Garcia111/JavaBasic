@@ -13,10 +13,11 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.*;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author：Cheng.
@@ -54,7 +55,22 @@ public class RedisConfig {
 
     @Bean
     public JedisPool jedisPool(JedisPoolConfig jedisPoolConfig){
-        return new JedisPool(jedisPoolConfig,"47.94.158.155",6379);
+        return new JedisPool(jedisPoolConfig,"127.0.0.1",6379);
+    }
+
+
+    @Bean
+    public Jedis jedis(JedisPool jedisPool){
+        return jedisPool.getResource();
+    }
+
+
+    @Bean
+    public ShardedJedis getShardedJedis(JedisPoolConfig jedisPoolConfig){
+        JedisShardInfo info1 = new JedisShardInfo("127.0.0.1",6379);
+        JedisShardInfo info2 = new JedisShardInfo("127.0.0.1",6379);
+        ShardedJedisPool pool = new ShardedJedisPool(jedisPoolConfig,new ArrayList<JedisShardInfo>(Arrays.asList(info1,info2)));
+        return pool.getResource();
     }
 
     @Bean

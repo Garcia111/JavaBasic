@@ -44,13 +44,53 @@
         http://redisdoc.com
   Redis应用1---使用Redis对文章进行投票
      1.涉及到的指令学习：
+     
         1）Redis的SELECT 
             命令用于切换到指定的数据库，数据库索引号index用数字指定，以0作为起始索引值；
         2）Redis的INCR 命令：
             为键key存储的数字值上加1，如果键key不存在，那么它的值会先被初始化为0，然后再执行INCR命令
             如果键Key存储的值不能被解释为数字，那么INCR命令将会返回一个错误
-            会返回键key在执行加一操作之后的值
+            会返回键key在执行加一操作之后的
         3）SADD命令：
             将一个或者多个member元素加入到集合key中，
             假如key不存在，则创建一个只包含member元素作为成员的集合。当key不是集合类型时，返回一个错误。
             
+        4）Redis中的批量操作Pipeline
+            大多数情况下，我们都会通过请求-响应机制去操作Redis，只有这种模式的一般步骤是，先获得jedis实例，
+            然后头脑发福哦jedis的get/put方法与redis交互。由于redis是单线程的，下一次请求必须等待上一次
+            请求执行完成后才能继续执行。
+            然而使用Pipeline模式，客户端可以一次性的发送多个命令，无需等待服务端返回，这样就大大减少了网络往返时间，
+            提高了系统性能。
+            
+            示例见PipelineTest.java类
+            
+             public void userPipeline(){
+                ShardedJedisPipeline pipeline = shardedJedis.pipelined();
+                long begin = System.currentTimeMillis();
+                for(int i = 0;i<count;i++){
+                    pipeline.set("key_"+i,"value_"+i);
+                }
+                pipeline.sync();
+                shardedJedis.close();
+                System.out.println("usePipeline total time:"+(System.currentTimeMillis()-begin));
+            }
+
+        5）multi:
+            pipeline只是把多个redis指令一起发出去，redis并没有保证这些指定的执行是原子的;
+            multi相当于一个redis是transaction的，保证整个操作的原子性，避免由于中途出错而导致最后产生的数据不一致。
+            事务块内的多条命令会按照先后顺序被放进一个队列当中，最后由EXEC命令原子性地执行。
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
