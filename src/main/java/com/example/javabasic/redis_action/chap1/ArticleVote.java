@@ -8,9 +8,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.Pipeline;
-import redis.clients.jedis.Response;
+import redis.clients.jedis.*;
+
 import java.util.*;
 
 /**
@@ -33,8 +32,8 @@ public class ArticleVote {
     @Test
     public void testArticleVote(){
         Article article = new Article();
-        article.setAuthor("JK.罗琳");
-        article.setTitle("哈利波特与魔法石");
+        article.setAuthor("Bruce Eckel");
+        article.setTitle("Activiti实战7");
         article.setLink("www.google.com");
         article.setPublishTime(System.currentTimeMillis());
 
@@ -42,16 +41,21 @@ public class ArticleVote {
         Article aricle = articlePost(article);
         articleVote(article, "张三");
         articleVote(article, "李四");
-        articleVote(article, "张三");
-
+        articleVote(article, "王五");
+        articleVote(article, "某某某");
         int page = 1;
         //start即offset+1
         int start=(page-1)*ARTICLES_PER_PAGE;
         //end 即offset+limit
         int end=start+ARTICLES_PER_PAGE-1;
 
-        List<Map<String,String>> articleDataList = getArticlesByPage("score_order_zset",start, end);
+        List<Map<String,String>> articleDataList = getArticlesByPage("score_order",start, end);
         printArticles(articleDataList);
+
+        System.out.println("将文章添加到某个标签组中");
+        addArticlesToGroup( article,"English");
+        List<Map<String,String>> groupArticleList = getArticlesOfGroup("English",1, 10, "score_order");
+        printArticles(groupArticleList);
     }
 
     /**
@@ -88,10 +92,10 @@ public class ArticleVote {
 
         //文章按照分数排序的有序集合
         long now = System.currentTimeMillis() / 1000;
-        jedis.zadd("score_order_zset", now + VOTE_SCORE, article.getId());
+        jedis.zadd("score_order", now + VOTE_SCORE, article.getId());
 
         //文章按照发布时间排序的有序集合
-        jedis.zadd("publish_time_zset",
+        jedis.zadd("publish_time",
                 article.getPublishTime(),
                 article.getId());
 
@@ -122,7 +126,7 @@ public class ArticleVote {
 
             pipeline.hincrBy(article.getId(), "votes", 1);
             pipeline.sadd("vote_" + article.getId(), voter);
-            pipeline.zincrby("score_order_zset", VOTE_SCORE, article.getId());
+            pipeline.zincrby("score_order", VOTE_SCORE, article.getId());
 
             pipeline.exec();
             pipeline.sync();
@@ -166,6 +170,58 @@ public class ArticleVote {
     private Set<String> getVotersOfArticle(Article article){
         Set<String> voters = jedis.smembers("vote_"+article.getId());
         return voters;
+    }
+
+
+    /**
+     * 将文章添加到某个分组，相当于为文章添加标签
+     * 为每个群组创建一个集合，并将所有同属一个群组的文章id都记录到该集合里面
+     * @param groupName
+     */
+    private void addArticlesToGroup(Article article,String groupName){
+        if(jedis.smembers(groupName).contains(article.getId())){
+            System.out.println("此群组中已经包含此文章");
+            return;
+        }
+        jedis.sadd(groupName,article.getId());
+    }
+
+    /**
+     * 将文章从某个分组中删除
+     * @param article
+     * @param groupName
+     */
+    private void removeArticleFromGroup(Article article,String groupName){
+        if(!jedis.smembers(groupName).contains(article.getId())){
+            System.out.println("此群组中不包含此篇文章,不能从将此文章从群组中删除");
+            return;
+        }
+        jedis.srem(groupName,article.getId());
+    }
+
+    /**
+     * 取出某个分组里面的所有文章,为了能够根据评分对群组文章进行排序和汾阳王，网站需要将同一个群组里面的所有文章
+     * 都按照评分有序的存储到一个有序集合里面。
+     * @param groupName
+     * @return
+     */
+    private List<Map<String,String>> getArticlesOfGroup(String groupName,int start, int end, String orderName){
+        String key = groupName+":"+orderName;
+
+        if(!jedis.exists(key)){
+            jedis.zinterstore(key,groupName,orderName);
+            jedis.expire(key,600);
+        }
+        List<Map<String,String>> articleDataList = new ArrayList<>();
+        Set<Tuple> tuples = jedis.zrevrangeWithScores(key,0,25);
+        Map<String,Double> articleScores = new HashMap<>();
+        tuples.stream().forEach(tuple -> {
+            String element = tuple.getElement();
+            Map<String,String> articleData = jedis.hgetAll(element);
+            articleDataList.add(articleData);
+        });
+
+        return articleDataList;
     }
 }
 

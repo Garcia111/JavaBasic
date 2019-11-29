@@ -16,11 +16,11 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class SerialCodeServiceTest {
 
-    @Autowired
-    SerialCodeService serialCodeService;
-
-    @Test
-    public void test(){
-        serialCodeService.orderCode();
-    }
+//    @Autowired
+//    SerialCodeService serialCodeService;
+//
+//    @Test
+//    public void test(){
+//        serialCodeService.orderCode();
+//    }
 }
