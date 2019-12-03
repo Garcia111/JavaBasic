@@ -1,4 +1,4 @@
-package com.example.javabasic.schedule_task.quartz;
+package com.example.javabasic.schedule_task.quartz.example;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

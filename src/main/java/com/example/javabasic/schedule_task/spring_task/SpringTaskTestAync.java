@@ -1,4 +1,4 @@
-package com.example.javabasic.schedule_task.cron;
+package com.example.javabasic.schedule_task.spring_task;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
