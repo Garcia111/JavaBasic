@@ -16,12 +16,11 @@ class Count{
     private int count = 0;
     private Random rand = new Random(47);
 
-    /**
-     * 计数通过大门进入花园的总人数
-     * @return
-     */
+
     public synchronized  int increment(){
         int temp = count;
+        //todo
+        //是为了腾出让步的时间？？？？
         if(rand.nextBoolean()){
             Thread.yield();
         }
@@ -45,6 +44,7 @@ class Entrance implements Runnable{
 
     private final int id;
 
+    //是一个布尔标志，只会被读取和赋值，所以不需要同步对其的访问
     private static volatile boolean canceled = false;
 
     public static void cancel(){canceled = true;}
@@ -58,6 +58,7 @@ class Entrance implements Runnable{
     public void run() {
         while(!canceled){
             synchronized (this){
+                //进入一个人
                 ++number;
             }
             System.out.println(this+" Total: "+count.increment());
@@ -93,9 +94,10 @@ class Entrance implements Runnable{
 public class OrnamentalGarden {
 
     public static void main(String[] args) throws InterruptedException {
-        ExecutorService exec = new ThreadPoolExecutor(3,20,60L,
+        ExecutorService exec = new ThreadPoolExecutor(5,20,60L,
                 TimeUnit.SECONDS,new SynchronousQueue<Runnable>());
 
+        //该花园一共有5个入口
         for(int i=0;i<5;i++){
             exec.execute(new Entrance(i));
         }
@@ -103,6 +105,8 @@ public class OrnamentalGarden {
         Entrance.cancel();
         exec.shutdown();
 
+        //ExecutirService.awaitTermination()等待每个任务结束，如果所有的任务在超时时间达到之前全部结束，则
+        //返回true，否则返回false，表示所有的任务都已经结束了。
         if(!exec.awaitTermination(250,TimeUnit.MILLISECONDS)){
             System.out.println("Some tasks were not terminated!");
         }
