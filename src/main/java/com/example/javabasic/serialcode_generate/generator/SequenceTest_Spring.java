@@ -1,4 +1,4 @@
-package com.example.javabasic.serialcode.generator;
+package com.example.javabasic.serialcode_generate.generator;
 
 import com.xuanner.seq.sequence.Sequence;
 import com.xuanner.seq.sequence.impl.DefaultRangeSequence;

@@ -1,4 +1,4 @@
-package com.example.javabasic.serialcode.RedisGenerateCode;
+package com.example.javabasic.serialcode_generate.RedisGenerateCode;
 
 import com.xuanner.seq.range.impl.redis.RedisSeqRangeMgr;
 import com.xuanner.seq.sequence.impl.DefaultRangeSequence;

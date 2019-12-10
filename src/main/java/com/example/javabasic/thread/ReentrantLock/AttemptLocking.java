@@ -1,4 +1,4 @@
-package com.example.javabasic.thread.share_resource;
+package com.example.javabasic.thread.ReentrantLock;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;

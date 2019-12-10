@@ -1,4 +1,4 @@
-package com.example.javabasic.serialcode.generator;
+package com.example.javabasic.serialcode_generate.generator;
 
 import com.example.javabasic.entity.ObscureObj;
 
