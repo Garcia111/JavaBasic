@@ -28,7 +28,8 @@ public class TransientTest implements Serializable {
     }
 
 
-
+    //这里的readObject() writeObject()方法的执行时由ObjectInputStream与ObjectOutputStream
+    //中的readObject  writeObject方法通过反射调用实现的。
     private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException {
         s.defaultWriteObject();
         //序列化时不会按照默认算法将这个成员变量写入磁盘，而是写了个writeObject方法，
