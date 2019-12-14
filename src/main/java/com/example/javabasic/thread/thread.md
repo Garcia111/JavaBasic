@@ -488,7 +488,27 @@
   
   
   
-  
+CyclicBarrier
+    一个可循环利用的屏障，作用是让所有的线程都等待完成之后才会继续下一步行动。
+    例子：
+       就像生活中我们约朋友们到某个餐厅一起吃饭，有些朋友可能会早到，有些朋友可能会晚到，
+       但是这个餐厅规定必须等到所有人到齐之后才会放我们进去。这里的朋友们就是各个线程，
+       餐厅就是CyclicBarrier
+       
+    构造方法：
+        1.public CyclicBarrier(int parties);
+        2.public CyclicBarrier(int parties, Runanble barrierAction)
+        
+        parties------参与线程的个数；
+        Runnable参数----指定当最后一个到达线程要做到的任务
+        
+    重要方法
+    1.public int await() throws InterruptedException,BrokenBarrierException
+    2.public int await(long timeout,TimeUnit unit) throws InterruptedException,BrokenBarrierException,TimeoutException
+    
+    解析：
+    1.线程调用await()表示自己已经达到栅栏；
+    2.BrokenBarrierException:表示栅栏已经被破坏，破坏的原因可能是其中一个线程await()时被中断或者超时；
   
   
   
