@@ -487,32 +487,73 @@
     ArrayBlockingQueue:具有固定的尺寸，可以在它被阻塞之前，向其中放置有限数量的元素。
   
   
-  
-CyclicBarrier
-    一个可循环利用的屏障，作用是让所有的线程都等待完成之后才会继续下一步行动。
+线程间使用管道进行通信
+        线程间通过输入输出管道在线程间进行通信
+        PipeWriter:允许任务向管道写；
+        PipeReader:允许不同任务从同一个管道中读取
+        PipedReader的建立必须在构造器中与一个PipedWriter相关联，PipeReader与普通IO之间最重要的差异是PipeReader是可中断的。
+        管道基本上是一个阻塞队列，当线程从管道中读取数据时，如果没有更多的数据，管道将会自动阻塞,不需要调用任何wait()方法。
+
+
+死锁
+    发生死锁的条件：
+    1.互斥条件：任务使用的资源中至少有一个是不能共享的；
+    2.至少有一个任务它必须持有一个资源且正在等待获取另一个当前被别的任务持有的资源；
+    3.资源不能被任务抢占，任务必须将资源释放当做普通事件，也就是说任务不会从别的任务那里抢资源
+    4.必须有循环等待，一个任务呀等待其他任务所持有的资源，后者又在等待另一个任务所持有的资源，这样一直下去，直到有一个任务
+       在等待第一个任务所持有的资源，使得大家都被锁住。
+
+    防止死锁只需要破坏其中一个条件即可，最容易破坏的是第4个。
+
+
+java.util.concurrent中的构件
+
+1.CountDownLatch
+
+    CountDownLatch这个类使一个线程等待其他线程各自执行完毕后再执行；
+    这是通过一个计数器来实现的，计数器的初始值是线程的数量。每当一个线程执行完毕之后，计数器的值就-1，当计数器的值为0，
+    当计数器的值为0时，表示所有线程都执行完毕，然后再闭锁上等待的线程就可以恢复工作了。
+    可以向CountDownLatch对象设置一个厨师计数值，任何在这个对象上调用wait()的方法都将会阻塞，直至这个计数值到达0。
+
+
+    构造器：
+
+    1.public CountDownLatch(int count){}-----count为计数值
+    2.await()-----调用await()的线程将会被挂起，直到count值为0才会继续执行；
+    3.await(long timeout, TimeUnit unit)-----和await()类似，只不过在等待一定时间后count值还没有变为0的话就会继续执行；
+    4.countDown()-----将count值减1
+    5.getCount()------获取当前计数值
+
+
+2.CyclicBarrier---简单翻译过来是循环屏障
+    适用情景：你希望创建一组任务，它们并行地执行工作，然后在进行下一个步骤之前等待，知道所有的工作完成。
+    使得所有的并行任务都将在-栅栏处列队，因此可以一致性地向前移动。
+    CyclicBarrier与CountDownLatch的区别：
+    1.countDownLatch是一个计数器，线程完成一个记录一个，计数器递减，只能只用一次；
+    2.CyclicBarrier：的计数器更像一个阀门，需要所有线程都到达，然后继续执行，计数器递增，提供reset功能，可以多次使用。
+
     例子：
        就像生活中我们约朋友们到某个餐厅一起吃饭，有些朋友可能会早到，有些朋友可能会晚到，
        但是这个餐厅规定必须等到所有人到齐之后才会放我们进去。这里的朋友们就是各个线程，
        餐厅就是CyclicBarrier
-       
+
     构造方法：
         1.public CyclicBarrier(int parties);
         2.public CyclicBarrier(int parties, Runanble barrierAction)
-        
+
         parties------参与线程的个数；
         Runnable参数----指定当最后一个到达线程要做到的任务
-        
+
     重要方法
     1.public int await() throws InterruptedException,BrokenBarrierException
     2.public int await(long timeout,TimeUnit unit) throws InterruptedException,BrokenBarrierException,TimeoutException
-    
+
     解析：
     1.线程调用await()表示自己已经达到栅栏；
     2.BrokenBarrierException:表示栅栏已经被破坏，破坏的原因可能是其中一个线程await()时被中断或者超时；
+
+
   
-  
-  
-  
-  
-  
-  
+
+
+
