@@ -553,7 +553,54 @@ java.util.concurrent中的构件
     2.BrokenBarrierException:表示栅栏已经被破坏，破坏的原因可能是其中一个线程await()时被中断或者超时；
 
 
-  
+
+
+线程的Leader-Follower模式
+    在Leader-Follower线程模型中每个线程有三种状态：领导leader 追随follower 处理processing
+    假设共N个线程，其中只有1个leader线程（等待任务），X个processing线程（处理）余下有N-1-x个follower线程，
+    有一把锁，谁抢到谁就是leader,它的任务是等待新任务；
+    时间/任务来到时，leader线程会对其进行处理，从而转为processing状态，处理完成之后又转变为following;
+    丢失leading后，follower会尝试抢占锁，抢到则变为leader，否则保持follower
+    follower不干事，就是抢占锁，力图称为leader
+
+    在延迟队列DelayQueue中可以看到这种线程模式，这种队列常见用于以下问题：
+    （1）关闭空闲连接，服务中有很多客户端的连接，空闲一段时间之后需要将其关闭；
+    （2）缓存，缓存中的对象，超过了空闲时间，需要从缓存中移出
+
+
+
+sleep和wait有什么区别：
+    (1)这两个方法来自不同的类分别是Thread和Object：wait是Object对象中的实例方法，sleep是Thread类中的静态方法
+    (2)sleep()方法不会释放锁，wait方法释放了锁；
+    (3)wait  notify 和notifyAll只能在同步控制方法或者同步控制块中使用，而sleep可以在任何地方使用；
+    (4)wait()使用notify或者notifyAll()唤醒；sleep()通过超时或者调用iterrupt()方法唤醒
+
+线程的状态：new  runnable waiting timedwaiting blocked  dead
+
+    1.new--->runnable: start()
+    2.runnable--->waiting: object.wait()或者调用thread.join()
+      waiting---->runnable: notify()或者notifyAll()唤醒wait()方法，或者当调用thread.join()时，等待的线程thread的run()执行完毕
+    3.runnable---->timedwaiting: sleep(long time)
+      timedwaiting---->runnable:等待时间结束
+    4.runnable----->blocked：等待同步锁释放
+      blocked------>runnable:同步锁释放，获取锁
+    5.runnable---->dead:run()执行完毕
+
+
+
+PriorityBlockingQueue
+    PriorityBlockingQueue是一个无界有序的阻塞队列，该队列不支持插入null元素，同时不只是插入非comparable的对象。
+    它的迭代器并不保证队列保持任何特定的顺序，如果想要顺序遍历，考虑使用Arrays.sort(pq.toArary());
+    不保证同等优先级的元素顺序，如果想要强制顺序就要考虑自定义顺序或者使用Comparator使用第二个比较属性。
+
+
+
+
+
+
+
+
+
 
 
 
