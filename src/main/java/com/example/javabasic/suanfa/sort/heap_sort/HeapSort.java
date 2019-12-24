@@ -1,4 +1,4 @@
-package com.example.javabasic.suanfa.heap_sort;
+package com.example.javabasic.suanfa.sort.heap_sort;
 
 import java.util.Arrays;
 
