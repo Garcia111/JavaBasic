@@ -1,6 +1,5 @@
 Jva集合排序工具
     Java集合的工具类Collections找那个提供了两种排序方法，分别是：
-    
     1.Collections.sort(List list)-------List中的元素需要实现Comparable接口
     2.Collections.sort(List list, Comparator c)------需要实现一个实现了Comparator的类
     3.使用Stream的Sorted方法，最后需要collect(Collectors.toList())生成一个已经排序的列表，

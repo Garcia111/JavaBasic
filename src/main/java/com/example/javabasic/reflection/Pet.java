@@ -1,19 +1,23 @@
 package com.example.javabasic.reflection;
 
+/**
+ * @author：Cheng.
+ * @date：Created in 9:32 2019/12/23
+ */
 public class Pet extends Individual {
+
     public Pet(String name) {
         super(name);
     }
 
-    public Pet(){
+    public Pet() {
         super();
     }
-
 }
 
 
 class Dog extends Pet{
-    public Dog(String name){
+    public Dog(String name) {
         super(name);
     }
 
@@ -33,9 +37,7 @@ class Mutt extends Dog{
     }
 }
 
-
-
-class Pug extends  Dog{
+class Pug extends Dog{
     public Pug(String name) {
         super(name);
     }
@@ -46,7 +48,7 @@ class Pug extends  Dog{
 }
 
 
-class  Cat extends Pet{
+class Cat extends Pet{
     public Cat(String name) {
         super(name);
     }
@@ -58,6 +60,7 @@ class  Cat extends Pet{
 
 
 class EgyptianMau extends Cat{
+
     public EgyptianMau(String name) {
         super(name);
     }
@@ -66,6 +69,7 @@ class EgyptianMau extends Cat{
         super();
     }
 }
+
 
 
 class Manx extends Cat{
@@ -90,6 +94,7 @@ class Cymric extends Manx{
 }
 
 
+
 class Rodent extends Pet{
     public Rodent(String name) {
         super(name);
@@ -102,7 +107,6 @@ class Rodent extends Pet{
 
 
 class Rat extends Rodent{
-
     public Rat(String name) {
         super(name);
     }
@@ -133,4 +137,23 @@ class Hamster extends Rodent{
         super();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
