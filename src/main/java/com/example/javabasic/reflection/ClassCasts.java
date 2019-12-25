@@ -15,8 +15,9 @@ public class ClassCasts {
         Building b = new House();
         Class<House> houseType = House.class;
         House h= houseType.cast(b);
-        //上下两种转型其实是达到了同样的效果
+        //上下两种转型其实是达到了同样的效果,将Building类型的引用转换为House类型
         h = (House)b;
+        System.out.println(h.getClass());
     }
 
 }

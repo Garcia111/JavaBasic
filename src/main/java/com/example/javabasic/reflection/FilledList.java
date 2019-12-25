@@ -23,6 +23,7 @@ public class FilledList<T>{
     }
 
 
+    //创建n个固定类型的对象，并添加进列表中
     public List<T> create(int nElements){
         List<T> result = new ArrayList<T>();
 

@@ -5,6 +5,7 @@ package com.example.javabasic.reflection;
  * @date：Created in 17:06 2019/10/22
  */
 class Candy{
+    //static的初始化是在类加载时进行的
     static {System.out.println("Loading Candy");}
 }
 

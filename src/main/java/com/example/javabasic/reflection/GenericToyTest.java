@@ -16,6 +16,7 @@ public class GenericToyTest {
 //        Class<Toy> up2 = ftClass.getSuperclass();
 
         Object obj = up.newInstance();
+        System.out.println(obj.getClass());
 
     }
 
