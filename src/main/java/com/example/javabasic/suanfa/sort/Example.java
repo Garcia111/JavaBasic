@@ -10,7 +10,7 @@ public abstract class Example {
 
     public static boolean less(Comparable v, Comparable w){
         //v小于w返回true,否则返回false
-        return v.compareTo(w)<0;
+        return v.compareTo(w)<=0;
     }
 
     /**
