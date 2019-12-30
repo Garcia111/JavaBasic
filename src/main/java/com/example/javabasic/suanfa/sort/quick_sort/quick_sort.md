@@ -35,7 +35,7 @@
 
 对于快速排序的性能提升改进：
     1.切换到插入排序
-    对于小数组，快速排序比插入排序慢, 因为快速排序的sort()在小数组中也会调用自己：
+    **对于小数组，快速排序比插入排序慢, 因为快速排序的sort()在小数组中也会调用自己**：
     改进：
 
     public static <T extends Comparable<? super T>> void sort(T[] array, int startIndex, int endIndex){
