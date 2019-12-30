@@ -33,7 +33,7 @@ class Toast{
 }
 
 
-class ToastQueue extends LinkedBlockingQueue<Toast>{}
+class ToastQueue extends LinkedBlockingQueue<Toast> {}
 
 class Toaster implements Runnable{
 

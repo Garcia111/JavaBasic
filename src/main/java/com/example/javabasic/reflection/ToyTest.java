@@ -67,7 +67,7 @@ public class ToyTest {
             Object obj = null;
 
             try{
-                //通过Class对象，创建类的实例
+                //通过Class对象，创建类的实例，创建的实例是Object类型的，但是会指向Toy对象，所以最后打印的是Toy的类型
                 obj = up.newInstance();
             }catch (InstantiationException e){
                 System.out.println("Can not instantiate");

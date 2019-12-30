@@ -551,9 +551,60 @@ java.util.concurrent中的构件
     解析：
     1.线程调用await()表示自己已经达到栅栏；
     2.BrokenBarrierException:表示栅栏已经被破坏，破坏的原因可能是其中一个线程await()时被中断或者超时；
-
-
-
+  
+  
+DelayQueue
+    1.DelayQueue是一个无界的BlockingQueue，用于放置实现了Delayed接口的对象，其中的对象只能在其到期时
+    才能从队列中取走，这种队列是有序的，即队列头元素是最接近过期的元素。
+    2.如果没有任何延迟到期，那么就不会有任何头元素，并且poll()将会返回null。
+    3.超时判定是通过getDelay(TimeUnit.NANOSECONDS)方法的返回值小于等于0来判断。
+    4.注意：不能讲null元素放置到这种队列中。
+    5.延迟队列实现了Iterator接口，但是iterator()遍历顺序不保证是元素的实际存放顺序
+    
+    
+  队列元素
+    DelayQueue<E extends Delayed>的队列元素需要实现Delayed接口：
+    
+    public interface Delayed extends Comparable<Delayed>{
+        long getDelay(TimeUnit unit);
+    }
+    
+    队列元素要实现getDelay(TimeUnit unit)方法和compareTo(Delayed o)方法，
+    getDelay()定义了剩余到期时间，
+    compareTo()方法定义了元素排序规则-----元素的排序规则影响了元素的获取顺序，将在后面说明。
+    
+    内部存储结构
+    DelayQueue的元素存储交由优先级队列存放
+    
+    public class DelayQueue<E extends Delayed> extends AbstractQueue<E> implements BlockingQueue<E> {
+        private final transient ReentrantLock lock = new ReentrantLock();
+        private final PriorityQueue<E> q = new PriorityQueue<E>();//元素存放
+        
+    DelayQueue的优先级队列使用的排序方式是队列元素的compareTo方法，优先队列存放顺序是从小到大的，
+    所以队列元素的compareTo方法影响了队列的出队顺序。
+    
+    若是compareTo方法定义不当，会造成延时高的元素在队头，延时低的元素无法出队。
+    
+  
+  DelayQueue中的重要方法：
+    1.boolean add(E e)
+    2.void clear()----从此延迟队列中原子地删除所有的元素
+    3.int drainTo(Collection<? super E> c)-----从该队列中删除所有可用的元素，并将它们添加到给定的集合中
+    4.Iterator<E> iterator()-----返回此队列中所有元素（包括已经过期和未过期）的迭代器
+    5.boolean offer(E e)------将制定的元素插入到此延迟队列中
+    6.boolean offer(E e,long timeout,TimeUnit unit)
+    7.peek()----检索但不删除此队列的头，如果此队列为空，则返回null
+    8.poll()----检索并删除此队列的头，或者如果次队列没有已经过期延迟的元素，则返回null
+    9.poll(long timeout, TimeUnit unit)----检索并删除此队列的头部，需等待此队列具有到期延迟的元素
+                                            或者等待指定的时间
+    10.void put(E e)------将指定的元素插入到此延迟队列中（此插入不会有延迟，因为是无界的）；
+    11.int  remainingCapacity()----总是返回Integer.MAX_VALUE,因为DelayQueue没有容量限制；
+    12.boolean remove(Object o)-----从该队列中删除指定元素的单个实例（如果存在）无论其是否已经过期
+    13.size()----返回此集合中的元素数；
+    14.E take()------检索并删除此队列的头部，如果需要，等待一个延迟到期的元素在此队列上可用
+    15.Object[] toArray()------返回一个包含此队列中所有元素的数组
+    16.<T> T[]  toArray(T[] a)------返回一个包含此队列中所有元素的数组，返回的数组的运行时类型是指定数组的运行时类型
+    
 
 线程的Leader-Follower模式
     在Leader-Follower线程模型中每个线程有三种状态：领导leader 追随follower 处理processing
@@ -589,10 +640,16 @@ sleep和wait有什么区别：
 
 
 PriorityBlockingQueue
-    PriorityBlockingQueue是一个无界有序的阻塞队列，该队列不支持插入null元素，同时不只是插入非comparable的对象。
-    它的迭代器并不保证队列保持任何特定的顺序，如果想要顺序遍历，考虑使用Arrays.sort(pq.toArary());
-    不保证同等优先级的元素顺序，如果想要强制顺序就要考虑自定义顺序或者使用Comparator使用第二个比较属性。
 
+    1.PriorityBlockingQueue是一个支持优先级的无界有序的阻塞队列，直到系统资源耗尽。该队列不支持插入null元素，同时不只是插入非comparable的对象；
+    2.默认情况下元素采用自然顺序升序排列，也可以使用元素实现comparable接口中的compareTo()方法来指定元素排序顺序，或者初始化PriorityBlockingQueue时，
+    指定构造参数Comparator来对元素进行排序。不保证同等优先级的元素顺序，如果想要强制顺序就要考虑自定义顺序或者使用Comparator使用第二个比较属性。
+    3.它的迭代器并不保证队列保持任何特定的顺序，如果想要顺序遍历，考虑使用Arrays.sort(pq.toArary());
+    
+    PriorityBlockingQueue是基于最小二叉堆实现的，使用基于CAS的自旋锁来控制队列的动态扩容，保证了扩容不会则色take操作的执行。
+    
+    //最小二叉堆
+    //CAS自旋锁
 
 
 

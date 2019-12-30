@@ -30,9 +30,11 @@ public class DownToUpMergeSort {
                 //[start,mid] [mid+1, end],归并
                 for(k = start; k <= end; k++){
                     if(i > mid){
+                        //右边有剩余
                         A[k] = aux[j++];
                     }else
                     if(j > end){
+                        //左侧集合有剩余
                         A[k] = aux[i++];
                     }else
                     if(aux[i].compareTo(aux[j]) < 0){
