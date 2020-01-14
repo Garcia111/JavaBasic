@@ -138,10 +138,149 @@
     执行线程栈，其他线程无法访问这个栈。
     栈限制与ad-hoc线程限制相比，更容易维护，更加健壮。
 
+  对于基本类型的本地变量，无需去尝试利用栈限制，因为无法获得基本类型的引用，所以语言语义确保了基本本地变量总是线程封闭的。
+  可以看到在以下代码中，本地方法内部的引用animals, candidate，以及animals内部对象的引用都没有进行发布，返回值是基本数据类型
+  因此不会存在对象的逸出问题。所有对象的引用都限制在本地方法栈内，只有通过方法内部的本地变量才可以触及对象，因此此方法内部的对象是
+  线程安全的。
+
+    public int loadTheArk(Collection<Animal> candidates){
+        SortedSet<Animal> animals;
+        int numPairs = 0;
+        Animal candidate = null;
+
+        animals = new TreeSet<Animal>(new SpeciesGenderComparator());
+        animals.addAll(candidates);
+        for(Animal a: animals){
+            if(candidate == null || ！candidate.isPotentialMate(a)){
+            candidate = a;
+            }else{
+                ark.load(new AnimalPair(candidate,a));
+                ++numPairs;
+                candidate = null;
+            }
+        }
+        return numPairs;
+    }
 
 
+   3.ThreadLocal
+   ThreadLocal提供了get与set访问器，为每个使用某个对象的线程维护一份单独的拷贝，所以get总是返回由当前线程通过set设置的最新值。
+   关于ThreadLocal的原理去thread.md中查看。
+   Spring中当JDBC使用ThreadLocal进行存储的情况，代码如下：
+
+   private static ThreadLocal<Connection> connectionHolder = new ThreadLocal<Connection>(){
+        public Connection initialValue(){
+            return DriverManager.getConnection(DB_URL);
+        }
+   };
+   public static Connection getConnectino(){
+        retuen connectionHolder.get();
+   }
+   其他应用：实现一个应用程序框架会广泛地使用ThreadLocal，在EJB调用期间，J2EE容器将一个事务上下文与一个可执行线程关联起来。
+   它利用静态ThreadLocal持有事务上下文，当框架代码需要获知当前正在运行的是哪个事务时，它只需要从ThreadLocal中获得事务的上下文即可。
+   这样降低了为每个方法传递上下文信息的需要，不过却增加了任何使用该机制的代码与框架之间的耦合。
+
+3.4不可变性
+    不可变对象永远是线程安全的。
+    无论是Java语言规范还是Java存储模型都没有关于不可变性的正式定义，但是不可变性并不简单地等于将对象中的所有域都声明为final类型。
+    所有域都是final类型的对象仍然可以是可变的，因为final域可以获得一个到可变对象的引用，即使该引用不变，但是该可变对象的状态是可变化的。
+    "对象是不可变的"与"到对象的引用是不可变的"之间并不等同。
+
+    只有满足以下状态，一个对象才是不可变的：
+    1.它的状态不能在创建后再被修改；
+    2，所有的域都是final类型，
+    3.它被正确创建，创建期间没有发生this引用的逸出
+
+   不可变对象不可以被更新吗？
+    存储在不可变对象中的状态仍然可以通过替换一个带有新状态的不可变对象的实例得到更新。
+
+  Final域
+  final域使得确保初始化安全称为可能，初始化安全性让不可变性对象不需要同步就能自由地被访问和共享。？？
+  原则：
+  1.将所有的域声明为私有的，除非它们需要更高的可见性；
+  2.将所有的域声明为final的，除非他们是可变的
+
+  使用不可变对象保证线程安全性示例：
+
+   @Immutable
+   public class OneValueCache {
+
+      private final BigInteger lastNumber;
+      private final BigInteger[] lastFactors;
 
 
+      public OneValueCache( BigInteger i, BigInteger[] factors){
+          lastNumber = i;
+          lastFactors = Arrays.copyOf(factors,factors.length);
+      }
+
+      public BigInteger[] getFactors(BigInteger i){
+          if(lastNumber == null || !lastNumber.equals(i)){
+              return null;
+          }else{
+              return Arrays.copyOf(lastFactors,lastFactors.length);
+          }
+      }
+  }
+
+
+   发布该对象:
+   private volatile oneValueCache cache = new OneValueCache(null,null);
+
+   当想要更新该对象的状态的时候，直接new OneValueCache(param1,param2),替代原来的不可变对象。
+   当一个线程仅仅是持有该不可变对象时是不可以修改该对象的状态的，如果想要更新不可变对象的状态使用一个新的不可变对象
+   替代原来的对象之后，因为变量是使用volatile修饰的，新的数据会立即对其他线程可见。
+
+
+3.5安全发布
+    如何安全地共享一个对象？简单地将对象的引用存储到公共域中，还不足以安全地发布它，如下面我经常使用的方式，就不是线程安全的。
+
+    public Holder holder;
+
+    public void initialize(){
+        holder = new Holder(42);
+    }
+
+    由于没有限制holder的可见性，初始化线程在本线程内认为holder已经进行了初始化，但其他访问holder属性看到的有可能还未进行初始化。？？
+    这种不正确的发布导致其他线程可以观察到“局部创建线程”。
+
+    public class Holder {
+
+        private int n;
+
+        public Holder(int n){
+            this.n = n;
+        }
+
+        public void assertSanity(){
+            if(n !=n ){
+                throw new AssertionError("This statement is false.");
+            }
+        }
+    }
+    其他访问线程看到的可能是一个没有被初始化完全的holder，n=0 因此调用assertSanity()时，会报错。
+
+
+  不可变对象与初始化安全性
+    Java存储模型为共享不可变对象提供了特殊的初始化安全性的保证，**即使发布对象引用时没有使用同步，不可变对象仍然可以被
+    安全地访问。**不存在上述示例中变量n的初始化问题
+    这个保证还会延伸到一个正确创建的对象中所有final类型域的值，没有额外的同步，final域也可以被安全的访问。
+    然而，如果final域指向可变对象，那么访问这些对象的状态时仍然需要同步。
+
+
+  安全发布的模式
+      为了安全地发布对象，对象的引用以及对象的状态必须同时对其他线程可见，一个正确创建的对象可以通过下列条件安全的发布：
+      1.通过静态初始化器初始化对象的引用；
+        public static Holder holder = new Holder(42);
+        静态初始化器由JVM在类的初始阶段执行，由于JVM内在的同步，该机制确保了以这种方式初始化的对象可以被安全的发布。
+      2.将它的引用存储到volatile域或者AtomicReference;
+      3.将它的引用存储到正确创建的对象的final域中；
+      4.或者将它的引用存储到由锁正确保护的域中。
+
+  线程安全容器的同步原理：
+    将对象置入这些线程安全容器的操作，是将这个对象的引用存储到由锁正确保护的域中。
+    如果线程A将对象X置入某个线程安全容器，随后线程B重新获得X，这时可以保证B所看到X的状态，正是A设置的，尽管程序并没有对X
+    进行显式的同步。
 
 
 
