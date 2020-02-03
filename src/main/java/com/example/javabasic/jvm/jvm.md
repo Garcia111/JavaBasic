@@ -63,7 +63,7 @@ volatile关键字再析：
         start+=3;
         end+=3;
 
-        这种情况下，一旦在线程A的循环中执行了线程B，start有可能先更新成6，造成了一瞬间 start == end，从而跳出while循环的可能性。
+        这种情况下，一旦在线程A的循环中线程B执行了，start有可能先更新成6，造成了一瞬间 start == end，从而跳出while循环的可能性。
 
 
      volatile如何进行指令重排：

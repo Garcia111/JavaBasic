@@ -1,4 +1,4 @@
-package xiangxue.concurrent.chap1;
+package xiangxue.concurrent.chap1.base;
 
 /**
  * @author：Cheng.

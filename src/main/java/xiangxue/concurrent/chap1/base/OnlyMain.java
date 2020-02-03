@@ -1,4 +1,4 @@
-package xiangxue.concurrent.chap1;
+package xiangxue.concurrent.chap1.base;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;

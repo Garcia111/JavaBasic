@@ -54,7 +54,7 @@ public class ArticleVote {
 
         System.out.println("将文章添加到某个标签组中");
         addArticlesToGroup( article,"English");
-        List<Map<String,String>> groupArticleList = getArticlesOfGroup("English",1, 10, "score_order");
+        List<Map<String,String>> groupArticleList = getArticlesOfGroup("English", "score_order");
         printArticles(groupArticleList);
     }
 
@@ -200,12 +200,13 @@ public class ArticleVote {
     }
 
     /**
-     * 取出某个分组里面的所有文章,为了能够根据评分对群组文章进行排序和汾阳王，网站需要将同一个群组里面的所有文章
+     * 取出某个分组里面的所有文章,为了能够根据评分对群组文章进行排序，网站需要将同一个群组里面的所有文章
      * 都按照评分有序的存储到一个有序集合里面。
      * @param groupName
+     * @param  orderName  排序标准
      * @return
      */
-    private List<Map<String,String>> getArticlesOfGroup(String groupName,int start, int end, String orderName){
+    private List<Map<String,String>> getArticlesOfGroup(String groupName,String orderName){
         String key = groupName+":"+orderName;
 
         if(!jedis.exists(key)){
