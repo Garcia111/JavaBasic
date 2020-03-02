@@ -16,20 +16,20 @@ public class SpringTaskTest {
 
     @Scheduled(cron = "0/5 * * * * *")
     public void scheduled(){
-        log.info("=====>>>>>使用cron  {}",System.currentTimeMillis());
-        log.info("=====>>>>>scheduled---ThreadName:"+Thread.currentThread().getName());
+//        log.info("=====>>>>>使用cron  {}",System.currentTimeMillis());
+//        log.info("=====>>>>>scheduled---ThreadName:"+Thread.currentThread().getName());
     }
 
     @Scheduled(fixedRate = 5000)
     public void scheduled1() {
-        log.info("=====>>>>>使用fixedRate{}", System.currentTimeMillis());
-        log.info("=====>>>>>scheduled1---ThreadName:"+Thread.currentThread().getName());
+//        log.info("=====>>>>>使用fixedRate{}", System.currentTimeMillis());
+//        log.info("=====>>>>>scheduled1---ThreadName:"+Thread.currentThread().getName());
     }
 
     @Scheduled(fixedDelay = 5000)
     public void scheduled2() {
-        log.info("=====>>>>>fixedDelay{}",System.currentTimeMillis());
-        log.info("=====>>>>>scheduled2---ThreadName:"+Thread.currentThread().getName());
+//        log.info("=====>>>>>fixedDelay{}",System.currentTimeMillis());
+//        log.info("=====>>>>>scheduled2---ThreadName:"+Thread.currentThread().getName());
     }
 
 }

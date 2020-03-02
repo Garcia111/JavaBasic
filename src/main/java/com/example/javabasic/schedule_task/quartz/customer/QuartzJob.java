@@ -9,13 +9,13 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  * @author：Cheng.
  * @date：Created in 10:16 2019/12/3
  */
-public class QuartzJob extends QuartzJobBean {
+public class QuartzJob extends AbstractQuartzJobBean {
 
     @Autowired
     QuartzTestService quartzTestService;
 
     @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    void doExecuteInternal(JobExecutionContext context) {
         quartzTestService.quartzJob();
     }
 }

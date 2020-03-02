@@ -18,6 +18,6 @@ public class ScheduledJob2 implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        System.out.println("CRON ----> schedule job2 is running ... + " + name + "  ---->  " + dateFormat.format(new Date()));
+//        System.out.println("CRON ----> schedule job2 is running ... + " + name + "  ---->  " + dateFormat.format(new Date()));
     }
 }

@@ -7,7 +7,8 @@
     垃圾收集的对象。 默认情况下，任务执行线程不作为守护进程线程运行，因此它能够防止应用程序中止。 如果调用方希望快速
     终止计时器的任务执行线程，则调用方应该调用计时器的cancel方法。
     
-    如果计时器的任务执行线程意外中止，则在计时器上调用任务的任何进一步尝试都将会导致IllegalStateException,
+    如果计时器的任务执行线程意外中止，则在计时器上调用任务的任何
+    尝试都将会导致IllegalStateException,
     就好像调用了计时器的cancel方法一样。
     
     【这个类是线程安全的，多个线程可以共享一个计时器对象，而不需要外部同步。】
@@ -35,11 +36,11 @@ Timer的缺陷：
     使用ScheduleExecutorServic可以解决上述两个缺陷：https://www.cnblogs.com/zy-l/p/9178381.html
     
     
- 2.ScheduleExecutorService   
+ 2.**ScheduleExecutorService**
     
-    Java5.0引入了java.util.concurrent包，其中的一个并发实用程序是ScheduledThreadPoolExecutor，
+    Java5.0引入了java.util.concurrent包，其中的一个并发实用程序是**ScheduledThreadPoolExecutor**，
     它是一个线程池，用于以给定的速率或延迟 重复执行任务。它实际上是计时器/时间任务组合的更通用的替代品。
-    因为它允许多个服务线程，接受不同的实践单位，并且不需要子类化时间任务，只需要实现Runnable。
+    因为它允许多个服务线程，接受不同的时间单位，并且不需要子类化时间任务，只需要实现Runnable。
   
 3.Spring Task: Spring3.0以后自带的task,可以将它看成一个轻量级的Quartz，而且使用起来比Quartz简单的多。
     在定时任务方法上添加@Scheduled，需要在主类上使用@EnableScheduling注解开启对定时任务的支持，然后启动项目创建任务类。
@@ -170,8 +171,48 @@ Quartz Job数据存储
     
     https://www.jianshu.com/p/171d39067e42
     
-    
-    
+
+ Quartz集群相关数据库表
+    Quartz发布包中包含了所有被支持的数据库平台的SQL脚本，这些SQL脚本存在于
+    <quartz_home>/docs/dbTables目录下。
+    1.qrtz_job_details:存储的是job的详细信息，包括description描述，is_durable是否持久化，job_data持久化对象等基本信息；
+    2.qrtz_triggers:触发器信息，包括
+                            job名；
+                            description:触发器的描述等基本信息
+                            start_time:开始执行时间
+                            end_time：结束执行时间
+                            prev_fire_time:上次执行时间
+                            next_fire_time: 下次执行时间
+                            trigger_type:触发器类型，simple和cron
+                            trigger_state:执行状态，有waiting(等待) paused(暂停) acquired(运行中)
+    3.qrtz_cron_triggers:保存cron表达式
+    4.qrtz_scheduler_state: 存储集群中note实例信息，quartz会定时读取该表的信息判断集群中每个实例的当前状态
+    5.qrtz_paused_trigger_grps:暂停的任务组信息
+    6.qrtz_locks:悲观锁发生的记录信息
+    7.qrtz_fired_triggers:正在运行的触发器信息
+    8.qrtz_simple_triggers:简单的触发器详细信息
+    9.qrtz_blob_triggers:触发器存为二进制对象类型
+    10.qrtz_canlendars:以Blob类型存储Quartz的Canlendar信息
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
     

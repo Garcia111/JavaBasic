@@ -12,12 +12,18 @@ import java.util.TimerTask;
 public class TimerTestDemo2 {
 
     private Timer timer;
+    private Timer timer2;
     private long start;
 
+    public TimerTestDemo2(){
+        this.timer = new Timer();
+        this.timer2 = new Timer();
+        start = System.currentTimeMillis();
+    }
 
     public static void main(String[] args){
         TimerTestDemo2 timerDemo = new TimerTestDemo2();
-        System.out.println("任务开始: " + timerDemo.start);
+//        System.out.println("任务开始: " + timerDemo.start);
         //如果任务1 中发生了异常，任务2也不会继续执行，Timer是单线程的
         timerDemo.timerOne();
         timerDemo.timerTwo();
@@ -25,10 +31,10 @@ public class TimerTestDemo2 {
 
 
     public void timerOne(){
-        timer.schedule(new TimerTask() {
+        timer2.schedule(new TimerTask() {
             @Override
             public void run() {
-                throw new RuntimeException();
+//                throw new RuntimeException();
             }
         },1000);
     }
@@ -38,7 +44,7 @@ public class TimerTestDemo2 {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("任务2开始执行："+new Date());
+//                System.out.println("任务2开始执行："+new Date());
             }
         },3000);
     }
