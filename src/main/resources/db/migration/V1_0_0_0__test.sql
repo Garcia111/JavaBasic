@@ -1,5 +1,5 @@
 
-
+DROP TABLE IF EXISTS user;
 CREATE TABLE user(
   id   BIGINT  NOT NULL,
   name CHARACTER VARYING(20) NOT NULL ,
@@ -10,6 +10,8 @@ CREATE TABLE user(
 );
 
 
+
+DROP TABLE IF EXISTS order_info;
 CREATE TABLE order_info(
  id       BIGINT  NOT NULL,
  user_id  BIGINT  NOT NULL,

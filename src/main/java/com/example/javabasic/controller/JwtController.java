@@ -1,5 +1,7 @@
-package com.example.javabasic.jwt_session_cookie;
+package com.example.javabasic.controller;
 
+import com.example.javabasic.jwt_session_cookie.JwtToken;
+import com.example.javabasic.jwt_session_cookie.User;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import java.util.List;
  * @author：Cheng.
  * @date：Created in 16:19 2019/11/14
  */
+@RequestMapping("/jwt")
 @RestController
 public class JwtController {
 

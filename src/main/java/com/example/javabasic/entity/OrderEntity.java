@@ -23,11 +23,8 @@ public class OrderEntity {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_info_seq")
-    @SequenceGenerator(
-            name = "order_info_seq",
-            sequenceName = "order_info_id_seq",
-            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "user_id",nullable = false)

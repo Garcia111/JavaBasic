@@ -4,7 +4,7 @@
 // */
 //package com.example.javabasic.serialcode.generator;
 //
-//import com.example.javabasic.entity.ObscureObj;
+//import com.example.javabasic.com.example.javabasic.shiro.example1.entity.ObscureObj;
 //import com.google.common.base.Strings;
 //import lombok.extern.slf4j.Slf4j;
 //import org.apache.commons.lang3.StringUtils;

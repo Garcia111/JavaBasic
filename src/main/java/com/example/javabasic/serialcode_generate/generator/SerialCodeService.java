@@ -1,6 +1,6 @@
 //package com.example.javabasic.serialcode.generator;
 //
-//import com.example.javabasic.entity.ObscureObj;
+//import com.example.javabasic.com.example.javabasic.shiro.example1.entity.ObscureObj;
 //import com.xuanner.seq.sequence.Sequence;
 //import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;

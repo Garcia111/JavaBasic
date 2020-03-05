@@ -11,8 +11,7 @@ import java.io.Serializable;
 
 @Table(name = "t_order")
 @Entity
-@Getter
-@Setter
+@Data
 @ToString
 @EqualsAndHashCode
 @Accessors(chain = true)
@@ -21,6 +20,8 @@ public class TOrderEntity implements Serializable {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "name",nullable = false)

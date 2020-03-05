@@ -1,8 +1,8 @@
 //package com.example.javabasic.redis_action.redis_practive_2.template;
 //
 //
-//import com.example.javabasic.entity.NullValueResultDO;
-//import com.example.javabasic.entity.Response;
+//import com.example.javabasic.com.example.javabasic.shiro.example1.entity.NullValueResultDO;
+//import com.example.javabasic.com.example.javabasic.shiro.example1.entity.Response;
 //import com.example.javabasic.redis_action.redis_practive_2.filter.RedisBloomFilter;
 //import com.example.javabasic.redis_action.redis_practive_2.util.RedisLock;
 //import org.springframework.beans.factory.annotation.Autowired;

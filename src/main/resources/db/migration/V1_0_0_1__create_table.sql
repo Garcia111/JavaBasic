@@ -1,5 +1,5 @@
 
-
+DROP TABLE IF EXISTS t_order;
 CREATE TABLE t_order(
   id       INTEGER  NOT NULL,
   name      CHARACTER VARYING(20) NOT NULL,
