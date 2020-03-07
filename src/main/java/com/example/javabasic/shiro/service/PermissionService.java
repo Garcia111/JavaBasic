@@ -1,7 +1,9 @@
 package com.example.javabasic.shiro.service;
 
+import com.example.javabasic.shiro.entity.Permission;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,5 +16,7 @@ public class PermissionService {
     public Set<String> queryPermissionsByUserId(Long userId){
         return null;
     }
+
+    public List<Permission> findPermissionByAdmin(Long adminId){return null;}
 
 }

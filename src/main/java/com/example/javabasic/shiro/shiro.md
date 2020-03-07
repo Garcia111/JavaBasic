@@ -64,6 +64,21 @@ Shiro
    Shiro不会去维护用户、维护权限，这些需要我们自己去设计/提供，然后通过相应的接口注入给shiro即可。
 
 
+   网上常见的shiro实例都是使用ini文件进行集成，shiro.ini文件的优缺点：
+    1.INI文件优势： 简单易懂，集成方便；
+    2.INI文件缺点： 只是适用于较少的用户系统，并且账号密码是固定的，采用硬编码方式将认证授权信息写在INI文件中，
+                   可维护性差
+
+  1)通过SecurityUtils得到Subject，其会自动绑定到当前线程，如果在Web环境在请求结束时需要解除绑定
+  2)调用subject.login 方法进行登录，其会自动委托给SecurityManager.login方法进行登录；
+  3)如果身份验证失败，请捕获AuthenticationException 或其子类，常见的有
+        DisabledAccountException(禁用的账号)
+        LockedAccountException(锁定的账号)
+        UnknownAccountException(错误的账号)
+        ExcessiveAttemptsException(登录失败次数过多)
+        IncorrectCredentialsException(错误的凭证)
+        ExpiredCredentialsException（过期的凭证）等
+     对于页面的错误消息展示，最好使用如"用户名密码错误"而不是 "用户名错误"和"密码错误"，防止一些恶意用户非法扫描账号库
 
 
 
@@ -74,8 +89,3 @@ Shiro
 
 
 
-
-
-
-
-    调用Subject.login()实现登录

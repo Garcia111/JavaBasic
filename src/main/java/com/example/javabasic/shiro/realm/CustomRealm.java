@@ -1,9 +1,10 @@
-package com.example.javabasic.shiro.example1;
+package com.example.javabasic.shiro.realm;
 
 
 import com.example.javabasic.shiro.entity.Permission;
 import com.example.javabasic.shiro.entity.Role;
 import com.example.javabasic.shiro.entity.User;
+import com.example.javabasic.shiro.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
