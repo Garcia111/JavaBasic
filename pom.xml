@@ -165,36 +165,6 @@
             <version>2.10</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>cn.com.ctsi</groupId>-->
-<!--            <artifactId>lib-commons</artifactId>-->
-<!--            &lt;!&ndash;<version>1.9.4</version>&ndash;&gt;-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>guava</artifactId>-->
-<!--                    <groupId>com.google.guava</groupId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>commons-io</artifactId>-->
-<!--                    <groupId>commons-io</groupId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>joda-time</artifactId>-->
-<!--                    <groupId>joda-time</groupId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>commons-collections4</artifactId>-->
-<!--                    <groupId>org.apache.commons</groupId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>commons-lang3</artifactId>-->
-<!--                    <groupId>org.apache.commons</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
-
-
-
 
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -307,14 +277,6 @@
             </exclusions>
         </dependency>
 
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/io.lettuce/lettuce-core &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>io.lettuce</groupId>-->
-            <!--<artifactId>lettuce-core</artifactId>-->
-            <!--<version>5.1.6.RELEASE</version>-->
-        <!--</dependency>-->
-
-
 
         <dependency>
             <groupId>redis.clients</groupId>
@@ -398,14 +360,7 @@
                     <artifactId>jackson-annotations</artifactId>
                     <groupId>com.fasterxml.jackson.core</groupId>
                 </exclusion>
-<!--                <exclusion>-->
-<!--                    <artifactId>swagger-models</artifactId>-->
-<!--                    <groupId>io.swagger</groupId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>springfox-swagger-common</artifactId>-->
-<!--                    <groupId>io.springfox</groupId>-->
-<!--                </exclusion>-->
+
             </exclusions>
         </dependency>
         <!-- SpringBoot整合Knife -->
@@ -418,38 +373,33 @@
                     <artifactId>guava</artifactId>
                     <groupId>com.google.guava</groupId>
                 </exclusion>
-<!--                <exclusion>-->
-<!--                    <artifactId>swagger-models</artifactId>-->
-<!--                    <groupId>io.swagger</groupId>-->
-<!--                </exclusion>-->
+
                 <exclusion>
                     <artifactId>springfox-bean-validators</artifactId>
                     <groupId>io.springfox</groupId>
                 </exclusion>
-<!--                <exclusion>-->
-<!--                    <artifactId>knife4j-spring</artifactId>-->
-<!--                    <groupId>com.github.xiaoymin</groupId>-->
-<!--                </exclusion>-->
+
             </exclusions>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.github.xiaoymin</groupId>-->
-<!--            <artifactId>swagger-bootstrap-ui</artifactId>-->
-<!--            <version>1.9.6</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.github.xiaoymin</groupId>-->
-<!--            <artifactId>knife4j-annotations</artifactId>-->
-<!--            <version>2.0.1</version>-->
-<!--        </dependency>-->
-
 
         <!-- https://mvnrepository.com/artifact/org.crazycake/shiro-redis -->
         <dependency>
             <groupId>org.crazycake</groupId>
             <artifactId>shiro-redis</artifactId>
             <version>2.8.24</version>
+        </dependency>
+
+         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>2.1.2.RELEASE</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>2.2.2.RELEASE</version>
         </dependency>
 
     </dependencies>
