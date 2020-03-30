@@ -49,7 +49,7 @@
     Callable是一种具有类型参数的泛型，它的类型参数表示的是从方法call()中返回的值，并且
     必须使用ExecutorService.submit()方法调用call()方法。
     
-    Submi()的Future结果对象
+    Submit()的Future结果对象
     submit()方法会产生Future对象，用Callable返回结果的特定类型进行了参数化。
     可以使用isDone()来查询Future是否已经完成，当任务完成时，Future对象会具有一个结果，可以调用get()来获取这个结果。
     如果你不用isDone()进行检查，就直接调用get()，这种情况下，get()将会阻塞，直至结果准备就绪。
@@ -333,8 +333,8 @@
         对于多线程资源共享的问题，同步机制采用了“以时间换空间”的方式，而ThreadLocal采用了“以空间换时间”的方式。
         前者仅提供一份变量，让不同的线程排队访问，而后者为每一个线程都提供了一份变量，因此可以同时访问而互不影响。
     
-        在Spring中，绝大部分Bean都可以声明为singleton作用域，就是因为Spring对一些Bean采用了ThreadLocal进行处理，
-        让他们也成为线程安全的状态。
+  在Spring中，绝大部分Bean都可以声明为singleton作用域，就是因为Spring对一些Bean采用了ThreadLocal进行处理，
+  让他们也成为线程安全的状态。
         
         一般的Web应用划分为视图层、服务层和持久层三个层次，在不同的层中编写对应的逻辑，下层通过接口向上层开放功能调用。
         在一般情况下，从接收请求到返回响应所经过的所有程序调用都属于同一个线程。同一线程贯穿三层，这样就可以根据需要将一些
@@ -510,12 +510,11 @@
 
 java.util.concurrent中的构件
 
-1.CountDownLatch
-
+1.CountDownLatch  详见CountDownLatchDemo.java
     CountDownLatch这个类使一个线程等待其他线程各自执行完毕后再执行；
     这是通过一个计数器来实现的，计数器的初始值是线程的数量。每当一个线程执行完毕之后，计数器的值就-1，当计数器的值为0，
-    当计数器的值为0时，表示所有线程都执行完毕，然后再闭锁上等待的线程就可以恢复工作了。
-    可以向CountDownLatch对象设置一个厨师计数值，任何在这个对象上调用wait()的方法都将会阻塞，直至这个计数值到达0。
+    当计数器的值为0时，表示所有线程都执行完毕，然后在闭锁上等待的线程就可以恢复工作了。
+    可以向CountDownLatch对象设置一个初始计数值，任何在这个对象上调用wait()的方法都将会阻塞，直至这个计数值到达0。
 
 
     构造器：
@@ -527,8 +526,8 @@ java.util.concurrent中的构件
     5.getCount()------获取当前计数值
 
 
-2.CyclicBarrier---简单翻译过来是循环屏障
-    适用情景：你希望创建一组任务，它们并行地执行工作，然后在进行下一个步骤之前等待，知道所有的工作完成。
+2.CyclicBarrier---简单翻译过来是循环屏障  详情见：CyclicBarrierDemo.java
+    适用情景：你希望创建一组任务，它们并行地执行工作，然后在进行下一个步骤之前等待，直到所有的工作完成。
     使得所有的并行任务都将在-栅栏处列队，因此可以一致性地向前移动。
     CyclicBarrier与CountDownLatch的区别：
     1.countDownLatch是一个计数器，线程完成一个记录一个，计数器递减，只能只用一次；
@@ -626,9 +625,11 @@ sleep和wait有什么区别：
     (1)这两个方法来自不同的类分别是Thread和Object：wait是Object对象中的实例方法，sleep是Thread类中的静态方法
     (2)sleep()方法不会释放锁，wait方法释放了锁；
     (3)wait  notify 和notifyAll只能在同步控制方法或者同步控制块中使用，而sleep可以在任何地方使用；
-    (4)wait()使用notify或者notifyAll()唤醒；sleep()通过超时或者调用iterrupt()方法唤醒
+      如果在非同步控制方法里面调用 wait notify 和 notifyAll 这些方法，程序能够通过编译，但是运行的时候，
+      将会抛出IllegalMonitorStateException异常，因为调用这些方法之前必须获取对象的锁。
+    (4)wait()使用notify或者notifyAll()唤醒；sleep()通过超时或者调用interrupt()方法唤醒
 
-线程的状态：new  runnable waiting timedwaiting blocked  dead
+【线程的状态】：new  runnable waiting timedwaiting blocked  dead
 
     1.new--->runnable: start()
     2.runnable--->waiting: object.wait()或者调用thread.join()
@@ -641,7 +642,9 @@ sleep和wait有什么区别：
 
 
 
-PriorityBlockingQueue
+【PriorityBlockingQueue】
+
+    //todo
 
     1.PriorityBlockingQueue是一个支持优先级的无界有序的阻塞队列，直到系统资源耗尽。该队列不支持插入null元素，同时不只是插入非comparable的对象；
     2.默认情况下元素采用自然顺序升序排列，也可以使用元素实现comparable接口中的compareTo()方法来指定元素排序顺序，或者初始化PriorityBlockingQueue时，

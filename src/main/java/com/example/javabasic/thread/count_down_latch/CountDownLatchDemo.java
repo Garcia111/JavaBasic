@@ -50,7 +50,9 @@ class TaskPortion implements Runnable{
     }
 }
 
-
+/**
+ * 等待CountDownLatch的任务
+ */
 class WaitingTask implements Runnable{
 
     private static int counter = 0;
@@ -95,6 +97,7 @@ public class CountDownLatchDemo {
         for (int i=0; i<10; i++){
             exec.execute(new WaitingTask(latch));
         }
+
 
         for (int i=0; i<SIZE; i++){
             exec.execute(new TaskPortion(latch));

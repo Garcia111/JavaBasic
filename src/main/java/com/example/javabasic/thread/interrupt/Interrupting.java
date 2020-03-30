@@ -90,7 +90,7 @@ public class Interrupting {
         Future<?> f  =exec.submit(r);
         TimeUnit.MILLISECONDS.sleep(100);
         System.out.println("Interrpting "+r.getClass().getName());
-        //调用future.candel(true)中断该线程
+        //调用future.cancel(true)中断该线程
         f.cancel(true);
         System.out.println("Interrupt sent to "+r.getClass().getName());
     }
