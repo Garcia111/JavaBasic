@@ -8,7 +8,8 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.JedisCommands;
+import redis.clients.jedis.commands.JedisCommands;
+import redis.clients.jedis.params.SetParams;
 
 import java.util.UUID;
 
@@ -63,7 +64,7 @@ public class RedisLock implements Lock{
         String uuid = UUID.randomUUID().toString();
         RedisCallback<String> callback = (connection) -> {
             JedisCommands commands = (JedisCommands) connection.getNativeConnection();
-            return commands.set(KEYPREFIX+key, uuid, "NX", "PX", 60000);
+            return commands.set(KEYPREFIX+key, uuid, new SetParams().px(60000));
         };
         Object execute = redisTemplate.execute(callback);
         if(execute!=null){

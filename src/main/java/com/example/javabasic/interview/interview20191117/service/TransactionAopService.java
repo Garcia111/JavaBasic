@@ -2,8 +2,8 @@ package com.example.javabasic.interview.interview20191117.service;
 
 import com.example.javabasic.entity.OrderEntity;
 import com.example.javabasic.entity.UserEntity;
-import com.example.javabasic.interview.interview20191117.repository.OrderInfoRepository;
-import com.example.javabasic.interview.interview20191117.repository.UserRepository;
+import com.example.javabasic.repository.OrderRepository;
+import com.example.javabasic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +19,10 @@ public class TransactionAopService {
     UserRepository userRepository;
 
     @Autowired
-    OrderInfoRepository orderInfoRepository;
+    OrderRepository orderRepository;
 
     public void addOrder(){
-        orderInfoRepository.save(new OrderEntity().setUserId(1L).setAmount(100L));
+        orderRepository.save(new OrderEntity().setUserId(1L).setAmount(100L));
         System.out.println("addOrder");
         addUser();
     }

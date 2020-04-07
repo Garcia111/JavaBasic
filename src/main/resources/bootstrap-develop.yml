@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: javabasic-develop
+  profiles:
+    include: develop

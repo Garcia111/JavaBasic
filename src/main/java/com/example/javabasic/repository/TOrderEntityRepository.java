@@ -1,4 +1,4 @@
-package com.example.javabasic.redis_action.redis_practive_2.dao;
+package com.example.javabasic.repository;
 
 import com.example.javabasic.entity.OrderEntity;
 import com.example.javabasic.entity.TOrderEntity;

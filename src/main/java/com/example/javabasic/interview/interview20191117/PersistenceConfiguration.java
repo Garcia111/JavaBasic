@@ -38,7 +38,6 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 //@EnableJpaAuditing(dateTimeProviderRef = "dateTimeProvider")
 @EnableJpaAuditing()
-@PropertySource("classpath:application.yml")
 public class PersistenceConfiguration {
 
 //    private static final String PROPERTY_NAME_DATABASE_DRIVER = "spring.datasource.driver-class-name";

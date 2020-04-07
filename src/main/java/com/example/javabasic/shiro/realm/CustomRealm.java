@@ -4,7 +4,7 @@ package com.example.javabasic.shiro.realm;
 import com.example.javabasic.shiro.entity.Permission;
 import com.example.javabasic.shiro.entity.Role;
 import com.example.javabasic.shiro.entity.User;
-import com.example.javabasic.shiro.service.UserService;
+import com.example.javabasic.shiro.service.UsersService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CustomRealm extends AuthorizingRealm {
 
     @Autowired
-    private UserService userService;
+    private UsersService usersService;
 
 
     /**
@@ -35,7 +35,7 @@ public class CustomRealm extends AuthorizingRealm {
         //获取登录用户名
         String name = (String)principalCollection.getPrimaryPrincipal();
 
-        User user = userService.getUserByName(name);
+        User user = usersService.getUserByName(name);
 
         //添加角色和权限
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
@@ -61,7 +61,7 @@ public class CustomRealm extends AuthorizingRealm {
 
         //获取用户信息
         String name = authenticationToken.getPrincipal().toString();
-        User user = userService.getUserByName(name);
+        User user = usersService.getUserByName(name);
         if(user == null){
             return null;
         }else{

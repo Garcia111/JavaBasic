@@ -8,7 +8,7 @@ package com.example.javabasic.shiro.permission_example;
 import com.example.javabasic.shiro.entity.User;
 import com.example.javabasic.shiro.service.PermissionService;
 import com.example.javabasic.shiro.service.RoleService;
-import com.example.javabasic.shiro.service.UserService;
+import com.example.javabasic.shiro.service.UsersService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -24,7 +24,7 @@ import java.util.Set;
 public class MyShiroRealm extends AuthorizingRealm {
 
     @Autowired
-    UserService userService;
+    UsersService usersService;
     @Autowired
     RoleService roleService;
     @Autowired
@@ -45,7 +45,7 @@ public class MyShiroRealm extends AuthorizingRealm {
                 "权限配置-->MyShiroRealm.doGetAuthorizationInfo() name：" + name,
                 "",
                 MyShiroRealm.class);
-        User user = userService.getUserByName(name);
+        User user = usersService.getUserByName(name);
         //判断当前登录用户是否存在
         if (Objects.isNull(user)) {
             throw new RuntimeException("LoginUserRealm doGetAuthorizationInfo， user is null");
@@ -66,7 +66,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         String name = token.getUsername();
         String password = String.valueOf(token.getPassword());
-        List<User> users = userService.getUserByNameAndPassword(name, password);
+        List<User> users = usersService.getUserByNameAndPassword(name, password);
         if (users.isEmpty()) {
             throw new AccountException("帐号或密码不正确！");
         }

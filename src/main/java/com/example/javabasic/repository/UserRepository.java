@@ -1,4 +1,4 @@
-package com.example.javabasic.interview.interview20191117.repository;
+package com.example.javabasic.repository;
 
 import com.example.javabasic.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

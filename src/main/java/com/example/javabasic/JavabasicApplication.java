@@ -15,7 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableAspectJAutoProxy(exposeProxy = true)
 @EnableConfigurationProperties
-@EnableJpaRepositories(value = {"com.example.javabasic.interview.interview20191117.repository",
+@EnableJpaRepositories(value = {"com.example.javabasic.repository",
         "com.example.javabasic.redis_action.redis_practive_2.dao"})
 @SpringBootApplication
 public class JavabasicApplication {

@@ -65,8 +65,7 @@ nigix中的linux基础知识
 
 
 
-LINUX文件和目录管理
-
+【LINUX文件和目录管理】
     文件相关属性意义
     文件示例：-rw-rw-r-- 1 inds inds        0 5月  31 2019 error.log
     第0位确定文件类型，如果有字母d标识，表名是目录，否则为文件；
@@ -115,13 +114,77 @@ LINUX文件和目录管理
     当要删除一个文件时，只要删除一个即可
 
     例如 ln -s b c
-    此时c的引用是指向b的，只要执行rm b，则会连同c也一起删除
+    此时c的引用是指向b的，只要执行rm b，c指向b的软链接依然存在只不过失效了
+
+【Linux rpm安装程序】
+1.RPM包命名原则
+
+    rpm -ivh jdk-8u221-linux-x64.rpm
+
+2.查询安装软件的版本
+
+    实例：查询安装的jdk版本
+    rpm -qa|grep jdk
+
+3.卸载软件命令
+
+    rpm -e 卸载的软件的全称
+    示例：rpm -e jdk1.8-1.8.0_221-fcs.x86_64
 
 
 
+【yum命令】
+yum提供了查找、安装、删除某一个、一组甚至全部软件包的命令。yum是在rpm的基础上继续封装出来的软件操作命令。
+yum语法：
+yum [options] [command] [packge_name]
+
+options:可选，选项包括 -y(当安装过程提示选择全部为yes) -q(不显示安装的过程)等等
+
+
+1.仅安装指定的软件命令
+  yum install <package_name>
+
+2.查找软件包的命令
+   yum search <package_name>
+
+3.查找已经安装的软件
+   示例：查找已经安装的jdk软件 yum list installed |grep jdk
+
+4.删除已经安装的软件
+   yum remove <package_name>
 
 
 
+【使用yum命令最好进行下如下配置：】配置完成之后，使用yum命令的速度就会快很多
+1.cd /etc/yum.repos.d
+2. yum文件的库文件以CentOS-Base.repo中记录的地址为准，也就是yum服务器的搜索地址
+3. wget 163的版本路径   163的版本路径为：http://mirrors.163.com/.help/CentOS-Base-163.repo即可，然后将名字改为CentOS-Base.repo
+4. 然后清理缓存即可，使用命令yum clean 和 yum clean all：
 
 
 
+【YUM缓存】
+    1.清除缓存目录(/var/cache/yum)下的软件包命令：yum clean packages
+    2.清除缓存目录(/var/cache/yum)下的 headers命令：yum clean headers
+    3.清除缓存目录(/var/cache/yum)下旧的 headers命令：yum clean oldheaders
+    4.清除缓存目录(/var/cache/yum)下的软件包及旧的headers命令：yum clean, yum clean all
+
+
+
+上传文件命令 rz
+下载文件命令 sz
+
+
+【Linux Shell】
+Linux的Shell种类众多，常见的有：
+1.Bourne Shell(/usr/bin/sh或 /bin/sh)
+2.Bourne Again Shell(/bin/bash)
+3.C Shell(/usr/bin/csh)
+4.K Shell(/usr/bin/ksh)
+5.Shell for Root(/sbin/sh)
+
+Bash在日常工作中被广泛使用，也是大多数Linux系统默认的shell
+Bash和sh一般是兼容的，声明 #!/bin/sh 改为 #!/bin/bash 一般也ok
+
+
+cd ~ :进入root命令的主目录

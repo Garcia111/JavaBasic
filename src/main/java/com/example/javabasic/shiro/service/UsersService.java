@@ -12,7 +12,7 @@ import java.util.*;
  * @date：Created in 23:41 2020/2/25
  */
 @Service
-public class UserService {
+public class UsersService {
 
 
     public User getUserByName(String userName) {

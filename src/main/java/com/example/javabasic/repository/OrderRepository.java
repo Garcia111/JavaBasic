@@ -1,4 +1,4 @@
-package com.example.javabasic.interview.interview20191117.repository;
+package com.example.javabasic.repository;
 
 import com.example.javabasic.entity.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @date：Created in 10:51 2019/11/18
  */
 @Repository
-public interface OrderInfoRepository extends JpaSpecificationExecutor<OrderEntity>,
+public interface OrderRepository extends JpaSpecificationExecutor<OrderEntity>,
         JpaRepository<OrderEntity,Long> {
 }

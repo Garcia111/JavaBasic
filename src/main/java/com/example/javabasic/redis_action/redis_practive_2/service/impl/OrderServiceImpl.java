@@ -3,7 +3,7 @@ package com.example.javabasic.redis_action.redis_practive_2.service.impl;
 import com.example.javabasic.entity.NullValueResultDO;
 import com.example.javabasic.entity.TOrderEntity;
 import com.example.javabasic.entity.Response;
-import com.example.javabasic.redis_action.redis_practive_2.dao.TOrderEntityRepository;
+import com.example.javabasic.repository.TOrderEntityRepository;
 import com.example.javabasic.redis_action.redis_practive_2.filter.RedisBloomFilter;
 import com.example.javabasic.redis_action.redis_practive_2.service.OrderService;
 import com.example.javabasic.redis_action.redis_practive_2.util.RedisLock;

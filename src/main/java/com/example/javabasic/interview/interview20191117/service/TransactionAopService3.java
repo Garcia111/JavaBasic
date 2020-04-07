@@ -4,8 +4,8 @@ import com.example.javabasic.entity.OrderEntity;
 import com.example.javabasic.entity.UserEntity;
 import com.example.javabasic.interview.interview20191117.exception.OrderInfoException;
 import com.example.javabasic.interview.interview20191117.exception.UserInfoException;
-import com.example.javabasic.interview.interview20191117.repository.OrderInfoRepository;
-import com.example.javabasic.interview.interview20191117.repository.UserRepository;
+import com.example.javabasic.repository.OrderRepository;
+import com.example.javabasic.repository.UserRepository;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +23,12 @@ public class TransactionAopService3 {
     UserRepository userRepository;
 
     @Autowired
-    OrderInfoRepository orderInfoRepository;
+    OrderRepository orderRepository;
 
 
     @Transactional(rollbackFor = OrderInfoException.class, noRollbackFor = RuntimeException.class)
     public void addOrder() throws OrderInfoException, UserInfoException {
-        orderInfoRepository.save(new OrderEntity().setUserId(1L).setAmount(3000L));
+        orderRepository.save(new OrderEntity().setUserId(1L).setAmount(3000L));
         System.out.println("addOrder");
         TransactionAopService3 service = (TransactionAopService3) AopContext.currentProxy();
         service.addUser();

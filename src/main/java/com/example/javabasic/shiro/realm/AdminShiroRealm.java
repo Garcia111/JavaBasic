@@ -1,6 +1,7 @@
 package com.example.javabasic.shiro.realm;
 
 
+
 import com.example.javabasic.shiro.chap2.UserToken;
 import com.example.javabasic.shiro.entity.Admin;
 import com.example.javabasic.shiro.service.AdminService;
