@@ -7,8 +7,7 @@
     在正常的负载下，服务器应用程序应该兼具良好的吞吐量和快速的响应性。
         1.应用程序提供商希望程序支持尽可能多的用户，所以会努力降低每个用户的开销；
         2.用户则希望能够尽快的获得响应。
-
-    应用程序应该在负荷过载时平缓地劣化，而不应该负载一高就简单地以失败告终。
+    这两者是矛盾的，应用程序应该在负荷过载时平缓地劣化，而不应该负载一高就简单地以失败告终。
 
 
   6.1.3 无限制创建线程的缺点
@@ -26,4 +25,90 @@
 
 
 6.2 Executor框架
+   Executor框架可以支持很多不同类型的任务执行策略，它还**为任务提交和任务执行之间的解耦提供了标准的方法**，为使用
+   Runnable描述任务提供了通用的方式。
+   **？？？Executor的实现还提供了对生命周期的支持以及钩子函数，可以添加诸如统计收集、应用程序管理机制和监视器等扩展。**
+
+   Executor是基于生产者-消费者模式，提交任务的执行者是生产者，执行任务的线程是消费者。
+   使用Executor通常是实现生产者-消费者设计中最简单的方式。
+
+  【执行策略】
+   将任务的提交与任务的执行体进行解耦的价值在于你可以简单地为一个类给定的任务制定执行策略。
+   一个执行策略指明了任务执行的几个因素：
+   1.任务在什么线程中执行；
+   2.任务以什么顺序执行（FIFO,LIFO,优先级...）
+   3.可以有多少个任务并发执行
+   4.可以有多少个任务进入等待执行队列
+   5.如果系统过载，需要放弃一个任务，应该挑选哪一个任务？另外，容一个通知应用程序知道某一个任务已经被舍弃了呢？
+   6.在一个任务的执行前与结束后，应该做什么处理？
+
+  【线程池】
+   线程池是与工作队列紧密绑定的，工作队列的作用是持有所有等待执行的任务。
+  使用线程池而不是每次都创建新的线程的优势：
+  1.处理多请求时抵消线程创建、消亡产生的开销；
+  2.在请求到达时，工作线程已经存在，减少了用户响应时间。
+  3.通过调整线程池的大小，可以得到足够多的线程以合理利用处理器资源，还可以防止过多的线程相互竞争导致内存耗尽；
+
+  .newFixedThreadPool:线程池定长，达到线程池最大长度后，线程池长度不会再变化。如果一个线程由于非预期的Exception
+                     而结束，线程池会补充一个新的线程。
+
+  .newCachedThreadPool:可缓存线程池，当线程池的长度超过处理需要时，可以灵活地回收空闲线程。当需求增加时，可以灵活地
+                        添加新的线程，而并不会对池点的长度作任何限制。
+
+  .newSingleThreadExecutor:只有唯一线程执行任务，工作线程如果因异常结束，会有另一个线程取代它。
+                           Executor会保证任务依照任务队列所规定的顺序(FIFO LIFO 优先级)执行。
+
+  .newScheduledThreadPool: 创建一个定场的线程池，而且支持定时的以及周期性的任务执行。
+
+
+
+ 【Executor的生命周期】
+    Executor是异步地执行任务，所以在任何时间里，所有值钱提交的任务的状态都不能立即可见。
+    这些任务中，有些可能已经完成，有些可能正在运行，其他的还可能在队列中等待执行。
+    为了解决这个执行服务的生命周期问题，ExecutorService接口扩展了Executor,并且添加了一些用于生命周期管理的方法。
+
+    public interface ExecutorService extends Executor{
+        void shutdown();
+        List<Runnable> shutdownNow();
+        boolean isShutdown();
+        boolean isTerminated();
+        boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;
+        ......
+    }
+
+   Executor生命周期有3种状态：运行（running）关闭（shutting down）和终止（terminated）。
+       .ExecutorService最初创建后的初始状态是运行状态；
+       .shutdown方法会启动一个平缓的关闭过程：停止接受新的任务，同时等待已经提交的任务完成，包括尚未开始执行的任务
+       .shutdownNow方法会启动一个强制的关闭过程：尝试取消所有运行中的任务和排在队列中尚未开始的任务。
+
+   在关闭后提交到ExecutorService中的任务，会被**拒绝执行任务处理器**（rejected execution handler）处理。
+   【拒绝执行处理器】是ExecutorService的一种实现, ThreadPoolExecutor提供的，可能只是简单的放弃任务；也可能
+   会引起executor抛出一个未检查的RejectedExecutionException。
+
+   一旦所有任务全部完成后，ExecutorService会转入终止状态。
+   1.可以调用awaitTermination等待ExecutorService到达终止状态，通常shutdown会紧随awaitTermination之后，
+     这样可以产生同步地关闭ExecutorService的效果；
+   2.也可以轮询检查isTerrminated判断ExecutorService是否已经终止。
+
+
+ 6.2.5 延迟的并具有周期性的任务
+       Timer  VS  ScheduledThreadPoolExecutor
+
+   .Timer工具管理任务的延迟执行以及周期性执行是基于绝对系统时间的，因此任务对系统时钟的改变时敏感的。
+   .**Timer只创建唯一的线程来执行所有timer任务**，如果一个timer任务的执行很耗时，会导致其他TimerTask的时效出现准确性问题。
+       ScheduledThreadPool可以提供多个线程来执行、并周期性地执行任务。
+   .线程泄露问题——如果TimerTask抛出未检查的异常，Timer将会产生无法预料的行为。Timer的线程并不会捕获一成，所以TimerTask抛出的未检查的异常
+    会中止timer线程。这种情况下，Timer也不会再重新恢复线程的执行了，它会错误地认为整个Timer都被取消了。
+
+
+
+
+
+
+
+
+
+
+
+
 

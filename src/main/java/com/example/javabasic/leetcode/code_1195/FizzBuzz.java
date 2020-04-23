@@ -26,6 +26,9 @@ public class FizzBuzz {
         for(;;){//无限循环
             semaphore.acquire(1);
             try{
+                //在循环过程中如果打印的字符串个数已经满足要求，那么会使用return来返回，终止该方法的执行
+                //但是因为已经获取了信号量，那么在方法返回前需要释放该信号量，否则会导致其他线程一直等待，
+                //整个程序一直不结束，使用try-finally可以保证无论如何都会释放信号量，进而使其他线程获得信号量
                 if(currentNum > n){
                     return;
                 }
