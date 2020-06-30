@@ -137,6 +137,14 @@ public class ShiroConfig {
     }
 
     //Filter工厂，设置对应的过滤条件和跳转条件
+
+    /***
+     * ShiroFilterFactoryBean 处理拦截资源文件问题，初始化ShiroFactoryBean的时候需要注入SecurityManager
+     * Web应用中，Shiro可控制的Web请求必须进过Shiro主拦截器的拦截
+     *
+     * @param securityManager
+     * @return
+     */
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
