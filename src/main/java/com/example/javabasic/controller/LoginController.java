@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
  * @author：Cheng.
  * @date：Created in 20:18 2020/2/26
  */
-@Api(value = "/login",tags = "shiro登录相关接口")
-@RequestMapping("/login")
+@Api(value = "/shiro/login",tags = "shiro登录相关接口")
+@RequestMapping("/shiro/login")
 @RestController
 public class LoginController {
 
@@ -28,24 +28,29 @@ public class LoginController {
     @ApiResponse(code = 200, message = "请求成功")
     @GetMapping
     public String login(LoginRequest loginRequest){
-        //添加用户认证信息jwtController
+        //获取当前的登录对象
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken  usernamePasswordToken = new UsernamePasswordToken(
-                loginRequest.getUserName(),
-                loginRequest.getPassword()
-        );
+        //判断对象是都已经经过验证
+        if(!subject.isAuthenticated()){
+            //构造一个UsernamePasswordToken
+            UsernamePasswordToken  usernamePasswordToken = new UsernamePasswordToken(
+                    loginRequest.getUserName(),
+                    loginRequest.getPassword()
+            );
 
-        try{
-            //进行验证
-            subject.login(usernamePasswordToken);
-        }catch (AuthenticationException e){
-            e.printStackTrace();
-            return "账号或密码错误";
-        }catch (AuthorizationException e){
-            e.printStackTrace();
-            return "没有权限";
+         try{
+                //进行登录
+                subject.login(usernamePasswordToken);
+            }catch (AuthenticationException e){
+                e.printStackTrace();
+                return "账号或密码错误";
+            }catch (AuthorizationException e){
+                e.printStackTrace();
+                return "没有权限";
+            }
+            return "login success";
         }
-        return "login success";
+        return "already login";
     }
 
     @RequiresRoles("admin")
@@ -53,6 +58,15 @@ public class LoginController {
     @GetMapping("/index")
     public String index(){
         return "index!";
+    }
+
+
+
+
+    @RequiresPermissions(value = {"ROLE_ADMIN"})
+    @GetMapping("/data/{id}")
+    public String  getData(){
+        return "your data is ready";
     }
 
 }

@@ -3,7 +3,7 @@ Shiro
     常用的Java Web访问控制实施流程
         1.用户 向 [权限管理模块] 申请用户 申请权限
         2，用户使用用户名密码 登录， 使用 [安全管控模块] 做登录认证
-        2.安全管控模块 向权限管理模块请求获取用户权限数据和用户数据
+        3.安全管控模块 向权限管理模块请求获取用户权限数据和用户数据
 
    **安全管控模块**常使用下列安全框架：
 
@@ -45,7 +45,7 @@ Shiro
          Shiro从Realm获取安全数据（如用户、角色、权限），SecurityManager要验证用户身份，那么它需要从Realm
          获取相应的用户进行比较以确定用户身份是否合法，也需要从Realm得到用户相应的角色/权限进行验证用户是否能够进行
          操作。
-         _可以有一个或者多个Realm，可以认为是安全实体数据源，即用于获取安全实体的，可以是JDBC实现，也可以是内存实现
+         可以有一个或者多个Realm，可以认为是安全实体数据源，即用于获取安全实体的，可以是JDBC实现，也可以是内存实现
          由用户提供，一般在应用中都需要实现自己的Realm_
    6.SessionManager
 
@@ -115,7 +115,175 @@ ShiroFilter的工作原理
   前端发起的所有请求都会被ShiroFilter拦截到，访问时，如果有权限或者允许匿名访问，则可以直接访问，否则将会
   被重定向到loginUrl。
 
+ShiroFilterFactoryBean中FilterChainDefinitionMap属性设置：
+   1 : [urls]部分的配置，其格式是："url=拦截器[参数],拦截器[参数]"
+   2 : 如果当前请求的url匹配[urls] 部分的某个url模式，将会执行其匹配的拦截器
+   3 : anon (anonymous) 拦截器表示可以匿名访问（即不需要登录就可以访问）
+   4 : authc (authentication) 拦截器表示表示身份需要认证通过后才能访问
+   5 : url匹配模式（url模式使用Ant风格），Ant路劲通配符支持?,*,** ，注意通配符匹配不包括目录分割符"/"
+        1).-?:匹配一个字符，如/admin? 将匹配admin1 ，但不匹配 /admin 或 /admin/
+        2).-*:匹配零个或多个字符串，如/admin* 将匹配 /admin123 , /admin ，但不匹配/admin/1
+        3).-**:匹配路劲中有零个或多个路劲，如/admin/** 将匹配 /admin/123 , /admin/123/1
+   6 : url匹配顺序（url权限采取第一次匹配优先的方式，即从头开始使用第一个匹配的url模式对应的拦截器链）
+        -/bb/** = filter1
+        -/bb/aa = filter2
+        -/** = filter3
+        如果请求的url是"/bb/aa",那么将使用filter1进行拦截
 
+【认证】
+Shiro的认证过程分析：
+    1.调用SecurityUtils.getSubject 获取当前subject
+    2.调用subject的isAuthenticated()测试当前的用户是否已经被认证，是否已经登录
+    3.如果未认证，则将请求中获得的用户名密码封装为UserNamePasswordToken值
+    4.执行登录：调用subject的login（AuthenticationToken）方法
+    5.自定义Realm方法，从数据库中获取对应的记录，返回给Shiro
+    6.由shiro完成密码比对
+    7.自定义Realm中用户的认证过程
+        1）把AuthenticationToken转换为UsernamePasswordToken
+        2)从UsernamePasswordToken中取得Username，
+        3）根据Username获取对应的用户记录
+        4）若用户不存在可以直接抛出UnknownAccountException
+        5)根据用户信息的情况，决定是否需要抛出其他AuthenticationException异常
+        6)根据用户情况，构建AuthenticationException异常，通常实现类是SimpleAuthenticationInfo
+
+密码的比对
+    【密码的比对是使用Realm中的CredentialsMatcher属性来进行比对的。】
+    1.UsernamePasswordToken中保存了前台页面传的用户名密码，SimpleAuthenticationInfo保存了从数据库中查询出来的用户名密码
+    【密码的MD5加密】
+    2.密码一般使用密文保存，可以使用CredentialsMatcher的子类HashedCredentialsMatcher来设置使用何种加密算法,加密的次数，是否使用盐等等
+    3.使用HashCredentialsMatcher时，在比对UsernamePasswordToken和SimpleAuthenticationInfo中的密码时，会自动对UsernamePasswordToken
+      中的密码进行加密；-----还有个问题，这种情况下难道前端在传给后端的过程中密码是明文传输的吗？
+    4.如何做到即使两个人的密码一样，但是加密之后的密码是不一样的？
+      使用盐进行加密，此时doGetAuthenticationInfo方法中返回的SimpleAuthenticationInfo 也应该是带有盐的，
+      使用 SimpleAuthenticationInfo(Object principal, Object hashedCredentials, ByteSource credentialsSalt, String realmName)构造器
+      通过不同的用户使用不同的盐进行加密，实现了每个人的加密后的密码也不同，即使原始密码相同。
+      使用ByteSource.Util.bytes(Object source);方法来生成每个客户的唯一盐值。
+    【多Realm的认证策略】
+      1>多Realm的应用场景：
+        1.不同的用户类型使用不同的Realm进行验证；
+        2.可能验证用的用户名密码存在于不同的数据库中，使用不同的加密方法进行加密
+      2>实现方法：
+        配置SecurityManager中的Realms List
+      3>如果有多个Realm的话，怎么才能算验证成功呢？
+        配置ModularRealmAuthenticator中的AuthenticationStrategy属性
+         。FirstSuccssfulStrategy: 只要有一个Realm验证陈宫即可，只返回第一个Realm身份验证成功的认证信息，其他的忽略。
+         。AtLeastOneSuccessfulStrategy（默认）:只要有一个Realm验证成功即可，和FirstSuccssfulStrategy不同，将返回所有
+                                        Realm身份验证成功的认证信息；
+         。AllSuccessfulStrategy:  所有Realm验证成功才算成功，且返回所有Realm身份验证成功的认证信息，如果有一个失败就失败了
+
+
+【授权】
+    授权，也叫做访问控制，即在应用中控制谁访问哪些资源（如访问页面/编辑数据/页面操作等）。在授权中需要了解的几个关键对象：主体（Subject）
+    资源（Resource）权限（Permission）角色（Role）
+    。主体-Subject：访问应用的用户，在Shiro中使用Subject代表该用户，用户只有授权后才允许访问相应的资源。
+    。资源-Resource: 在应用中用户可以访问的URL，比如访问JSP页面、查看/编辑某些数据、访问某个业务方法、发音文本等等都是资源。
+    。权限-Permission: 安全策略中原子授权单位，通过权限我们可以表示在应用中用户有没有操作某个资源的权利。
+      Shiro支持粗粒度权限（如用户模块的所有权限）和细粒度权限（操作某个用户的权限）
+    。角色-Role: 权限的集合，一般情况下会赋予用户角色而不是权限，这样用户可以拥有一组权限，赋予权限时比较方便。
+
+
+Shiro权限注解
+    1. @RequiresAuthentication:表示当前Subject已经通过login进行了身份验证，即Subject.isAuthenticated()返回true
+    2. @RequiredUser:表示当前Subject已经身份验证或者通过记住我扥估了的。
+    3. @RequiredGuest:表示房钱Subject没有身份验证或通过记住我登陆过，即是游客身份
+    4. @RequiredRoles(value = {"admin","user"},logical = Logical.AND):表示当前Subject需要角色admin和user
+    5. @RequiredPermissions(value = {"user:a","user:b"},logical = Logical.OR):表示当前Subject需要权限user.:或者user:b
+
+
+从数据表中初始化资源和权限
+    使用数据表中的资源构建成一个LinkedHashMap  FilterChainDeginitionMap作为
+    FilterChainDefinitions的属性
+
+
+会话管理
+    Shiro提供了完整的企业级会话管理功能，不依赖于底层容器（如web容器tomcat）,不管JAVA SE还是Java EE
+    都可以使用，提供了会话管理、会话事件监听、会话存储/持久化、容器无关的集群、失效/过期支持、对WEB的透明支持
+    SSO单点登录的支持性等特性。
+
+    会话相关的API
+    1.Subject.getSession()即可获取会话：
+           Subject.getSession(true):如果当前没有创建Session对象会创建一个
+           Subject.getSession(false):如果当前没有创建Session则返回null
+
+    2.Session.getId():获取当前会话的唯一标识
+
+    3.session.getHost():获取当前Subject的主机地址
+
+    4.session.getTimeOut() & session.setTimeout(毫秒)：获取/设置当前Session的过期时间
+
+    5.session.getStartTimestamp() & session.getLastAccessTime():获取会话的启动时间以及最后
+    访问时间，如果是Java SE 应用需要自己定期调用session.touch()去更新最后访问时间；如果是Web应用，
+    每次进入ShiroFilter都会自动调用session.touch()来访问最后访问时间。
+
+    6.session.touch() & session.stop():更新会话最后访问时间及销毁会话；当Subject.logout()时
+    会自动调用stop方法来销毁会话。
+    如果在web中，调用HttpSession.invalidate()也会自动调用Shiro Session.stop方法进行销毁Shiro的
+    会话。
+
+    7.session.setAttribute(key, val)
+      session.getAttribute(key)
+      session.removeAttribute(key)
+      设置/获取/删除会话属性，在整个会话范围内都可以对这些属性进行操作。
+
+      在controller层可以使用HttpSession，在service层可以使用Shiro的session,
+      这样可以及时在service层也可以访问到session数据。
+
+    Shiro提供了会话验证调度器，用于定期的验证是否会话是否已经过期，如果过期将停止会话。
+    处于性能考虑，一般情况下都是获取会话时来验证会话是否过期并停止会话的；
+    但是如在web环境中，如果用户不主动退出是不知道会话是否过期的，因此需要定期的检测会话是否过期，
+    Shiro提供了会话验证调度器，SessionValidateScheduler,
+    也提供了使用Quartz会话验证调度器 QuartzSessionValidationScheduler
+
+
+缓存
+    Shiro内部相应的组件DefaultSecurityManager会自动检测相应的对象如Realm是否实现了CacheManagerAware
+    并自动注入了相应的CacheManager，如果自动注入了的话，该对象就可以使用缓存了。
+
+   Shiro提供了CachingRealm，其实现了CacheManagerAware接口，提供了缓存的一些基础实现；
+   AuthenticatingRealm 及AuthorizationRealm 也分别提供了对AuthenticationInfo和AuthorizationInfo
+   信息的缓存。因此可以直接在Realm中使用缓存。
+
+   在实际的项目使用中一般会用redis来做Shiro的缓存。
+
+
+
+RememberMe功能
+    Shiro提供了记住我的功能，比如你访问如淘宝等一些网站时，关闭了浏览器，下次再打开时还能记住你是谁，下次访问
+    时无需在登录即可访问，基本流程如下：
+    1.首先在登录页面中选中RememberMe然后登录成功，如果是浏览器登录，一般会把RememberMe的Cookie写入到客户端
+      并且保存下来；
+    2.关闭浏览器再重新打开，会发现浏览器还是记住你的；
+    3.访问一般的网页服务器端还是知道你是谁；
+    4.但是比如我们要访问淘宝时，如果要查看订单或者进行支付时，此时还是需要再进行身份认证的，以确保当前用户还是你。
+
+
+认证与记住我
+    。subject.isAuthenticated()表示用户是进行了身份验证登录的，即使用Subject.login()进行了登录
+    。subject.isRemembered() 表示用户是通过记住我登录的，此时可能并不是真正的你，有可能是别人在使用你的电脑，也可能
+         是你的cookie被窃取了
+    一个登录后的用户，调用 subject.isAuthenticated == true或者 subject.isRemembered == true
+      不可能同时两者均为true，换言之两种登录方式只能有一种
+
+   访问一般网页： 我们使用user拦截器即可，user拦截器只要用户登录 isRemembered()||isAuthenticated()过即可访问成功
+   访问特殊网页： 如提交订单页面，我们使用 authc 拦截我即可，authc 拦截器会判断用户是否是通过subject.login()登录的，
+                如果是才会放行，否则会跳转到登录页面叫你重新登录。
+
+    记住我的实现：
+    在页面上设置一个checkBox，如果checkBox被选中了，则在controller层中，构建UsernamePasswordToken的时候，
+    设置一下usernamePasswordToken.setRememberMe(true)即可。
+
+    可以通过设置SecurityManager的RememberMeManager中cookie的maxAge来设置cookie的时长
+
+
+
+
+
+
+
+
+
+Shiro中的拦截器
+    Shiro内置了很多默认的拦截器，比如身份验证、授权等相关的。默认拦
 
 
 
