@@ -97,7 +97,7 @@ Timer的缺陷：
    
    4) Scheduller调度器
     
-          调度器相当于一个容器，装载着任务和触发器，该类是一个借口，代表一个Quartz的独立运行容器，Trigger和JobDetail   
+          调度器相当于一个容器，装载着任务和触发器，该类是一个接口，代表一个Quartz的独立运行容器，Trigger和JobDetail
           可以注册到Scheduler中，两者在Scheduler中拥有各组的组和名称，组和名称是Scheduler查找定位容器中某一对象的依据。
           https://www.cnblogs.com/wadmwz/p/10315481.html
     
