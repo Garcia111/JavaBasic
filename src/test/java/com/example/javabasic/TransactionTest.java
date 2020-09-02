@@ -1,10 +1,10 @@
 package com.example.javabasic;
 
-import com.example.javabasic.interview.interview20191117.exception.OrderInfoException;
-import com.example.javabasic.interview.interview20191117.exception.UserInfoException;
-import com.example.javabasic.interview.interview20191117.service.TransactionAopService;
-import com.example.javabasic.interview.interview20191117.service.TransactionAopService2;
-import com.example.javabasic.interview.interview20191117.service.TransactionAopService3;
+import interview.interview20191117.exception.OrderInfoException;
+import interview.interview20191117.exception.UserInfoException;
+import interview.interview20191117.service.TransactionAopService;
+import interview.interview20191117.service.TransactionAopService2;
+import interview.interview20191117.service.TransactionAopService3;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

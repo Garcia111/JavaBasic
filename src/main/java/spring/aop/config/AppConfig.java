@@ -11,7 +11,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @Configuration
 //Spring默认使用JDK动态代理，proxyTargetClass = false的时候，使用的是jdk动态代理
 //proxyTargetClass = true的时候，使用的是cglib动态代理
-@EnableAspectJAutoProxy(proxyTargetClass = false)
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan(value = {"spring.aop"})
 public class AppConfig {
 }

@@ -21,26 +21,34 @@ public class TestAop {
     public static void main(String[] args){
         AnnotationConfigApplicationContext annotationConfigApplicationContext =
                 new AnnotationConfigApplicationContext(AppConfig.class);
-//        IndexDao dao = (IndexDao) annotationConfigApplicationContext.getBean(IndexDao.class);
-
-
         Dao dao = (Dao) annotationConfigApplicationContext.getBean("indexDao");
-        System.out.println( dao instanceof  IndexDao);
+        Dao dao1 = (Dao) annotationConfigApplicationContext.getBean("indexDao");
+
+        System.out.println(dao.hashCode()+":::"+dao1.hashCode());
         dao.query1();
-        dao.query2();
-        dao.queryWithArg1("s");
-        dao.queryWithArg2(1);
+        dao1.query1();
 
-        Class<?>[] interfaces = new Class[]{Dao.class};
-        //获取ProxyDao的反编译文件
-        byte[] bytes = ProxyGenerator.generateProxyClass("ProxyDao",interfaces);
-        File file = new File("F:\\byte.class");
+        //测试introduce
+        Dao introduce = (Dao) annotationConfigApplicationContext.getBean("testIntroduce");
+        introduce.query1();
 
-        try(FileOutputStream fileOutputStream = new FileOutputStream(file)){
-            fileOutputStream.write(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        Dao dao = (Dao) annotationConfigApplicationContext.getBean("indexDao");
+//        System.out.println( dao instanceof  IndexDao);
+//        dao.query1();
+//        dao.query2();
+//        dao.queryWithArg1("s");
+//        dao.queryWithArg2(1);
+//
+//        Class<?>[] interfaces = new Class[]{Dao.class};
+//        //获取ProxyDao的反编译文件
+//        byte[] bytes = ProxyGenerator.generateProxyClass("ProxyDao",interfaces);
+//        File file = new File("F:\\byte.class");
+//
+//        try(FileOutputStream fileOutputStream = new FileOutputStream(file)){
+//            fileOutputStream.write(bytes);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

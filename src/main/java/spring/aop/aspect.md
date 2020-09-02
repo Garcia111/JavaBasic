@@ -18,6 +18,12 @@
         但是底层技术还是用的Spring自己的AOP技术。
   2）在配置文件中添加 @EnableAspectJAutoProxy----代表程序支持了AspectJ的语法
 
+  如果你需要对Spring管理的bean进行AOP增强，使用SpringAOP即可，但是如果需要通知增强对的对象不被Spring管理，则
+  需要使用AspectJ。
+
+  AspectJ是静态织入----生成的字节码文件已经具有通知的代码
+  SpringAOP是动态织入
+
 7.切点表达式---比较全面的了解
    https://shimo.im/docs/Nj0bcFUy3SYyYnbI/read
 
@@ -30,8 +36,6 @@
     通过查看JDK动态代理生成的代理类可以看出，代理类继承了Proxy类，然后实现了与目标类相同的接口，因为Java不支持多继承，所以选择实现接口的方式
 
    问题2：实现Proxy类的作用？
-
-
 
 
 

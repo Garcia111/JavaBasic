@@ -1,16 +1,20 @@
 package spring.aop.aspectj;
 
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import spring.aop.dao.Dao;
+import spring.aop.dao.IndexDao;
 
 /**
  * @author：Cheng.
  * @since： 2020/08/05
  */
-@Aspect
+@Aspect("perthis(this(spring.aop.dao.IndexDao))")
 @Component
+@Scope("prototype")
 public class AspectJ {
 
 
@@ -42,12 +46,49 @@ public class AspectJ {
     @Pointcut("@annotation(spring.annotation.pointcut)")
     public void pointWithAnnotation(){}
 
+    @DeclareParents(value = "spring.aop.dao.*+",defaultImpl = IndexDao.class)
+    public static Dao dao;
 
-    @Before("pointWithAnnotation()")
-    public void before(){
-        System.out.println("before");
+
+
+//    @Before("pointWithAnnotation()")
+//    public void before(JoinPoint joinPoint){
+//        System.out.println("before");
+//        System.out.println(joinPoint.getThis());
+//        System.out.println(joinPoint.getTarget());
+//    }
+
+
+    @Around("pointCutWithin()")
+    public void Around(ProceedingJoinPoint proceedingJoinPoint){
+        System.out.println("b");
+
+        System.out.println("切面hashCode:"+proceedingJoinPoint.getThis().hashCode());
+//        //getDeclaringTypeName（）获得方法所在的类名
+//        String signatureDeclareType = proceedingJoinPoint.getSignature().getDeclaringTypeName();
+//        System.out.println("signatureDeclareType:"+signatureDeclareType);
+//
+//        //getSignature().getName() 获得连接点方法的方法名
+//        String signatureName = proceedingJoinPoint.getSignature().getName();
+//        System.out.println("signatureName:"+signatureName);
+
+        Object[] args = proceedingJoinPoint.getArgs();
+        if(args != null && args.length >0){
+            for (int i = 0; i < args.length; i++) {
+                if(args[i] instanceof java.lang.String){
+                    args[i] += " hello! ";
+                }
+            }
+        }
+
+        try {
+            proceedingJoinPoint.proceed(args);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        System.out.println("a");
+        System.out.println("==========");
     }
-
 
 
 
