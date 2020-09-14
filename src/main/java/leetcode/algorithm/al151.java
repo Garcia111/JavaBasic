@@ -97,7 +97,7 @@ class Solution151 {
      * @param end
      */
     public String reverse(String s, int start, int end){
-        char[] array = new char[s.length()];
+        char[] array = s.toCharArray();
         for(int i=start,j=end; j>i; i++,j--){
             char temp = array[i];
             array[i] = array[j];

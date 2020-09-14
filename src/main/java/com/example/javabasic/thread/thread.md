@@ -442,7 +442,8 @@
   2.notify() vs notifyAll()
   
     使用notify()时，在众多等待同一个锁的任务中只有一个会被唤醒。
-    【调用notifyAll()并不是唤醒所有正在等待的任务，而是 当notifyAll()因为某个特定的锁而被调用时，只有等待
+    
+   【调用notifyAll()并不是唤醒所有正在等待的任务，而是 当notifyAll()因为某个特定的锁而被调用时，只有等待
          这个锁的全部任务才会被唤醒，如果等待的不是当前被释放的锁，则线程不会被唤醒。】
         示例见NotifyVsNotifyAll.java
         
